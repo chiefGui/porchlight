@@ -17,6 +17,8 @@ export type {
 	SystemClass,
 	SystemInstance,
 	SystemOptions,
+	TagDescriptor,
+	TagMask,
 } from "./ecs/index.ts";
 export {
 	Component,
@@ -27,6 +29,7 @@ export {
 	QueryDecorator,
 	System,
 	SystemDecorator,
+	Tag,
 	World,
 } from "./ecs/index.ts";
 export type {
@@ -61,3 +64,5 @@ export {
 	useTick,
 	useWorld,
 } from "./react/index.ts";
+export type { TimerEntry, TimerExpireCallback } from "./timer/index.ts";
+export { Timer } from "./timer/index.ts";

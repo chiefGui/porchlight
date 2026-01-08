@@ -1,5 +1,6 @@
 import { System, type SystemClass, World } from "../ecs/index.ts";
 import { Persistence } from "../persistence/index.ts";
+import { Timer } from "../timer/index.ts";
 import type { GameLoopConfig, TickCallback, TickContext } from "./types.ts";
 
 export class GameLoop {
@@ -62,6 +63,8 @@ export class GameLoop {
 			callback(context);
 		}
 
+		Timer.tick();
+
 		if (GameLoop.config.phases?.length) {
 			for (const phase of GameLoop.config.phases) {
 				System.runPhase(phase);
@@ -97,6 +100,8 @@ export class GameLoop {
 			callback(context);
 		}
 
+		Timer.tick();
+
 		System.run(...systems);
 		World.flushDirty();
 
@@ -125,6 +130,8 @@ export class GameLoop {
 			callback(context);
 		}
 
+		Timer.tick();
+
 		System.runPhase(phase);
 		World.flushDirty();
 
@@ -148,5 +155,6 @@ export class GameLoop {
 		GameLoop.config = {};
 		GameLoop.beforeTickCallbacks = [];
 		GameLoop.afterTickCallbacks = [];
+		Timer.reset();
 	}
 }

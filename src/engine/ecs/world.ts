@@ -1,4 +1,5 @@
 import { type Constructor, Container } from "../di/index.ts";
+import { Timer, type TimerEntry } from "../timer/index.ts";
 import {
 	Component,
 	type ComponentClass,
@@ -20,6 +21,7 @@ export class World {
 
 		Component.removeAllFromEntity(entityId);
 		Tag.removeAllFromEntity(entityId);
+		Timer.removeAllFromEntity(entityId);
 		return Entity.destroy(entityId);
 	}
 
@@ -122,11 +124,43 @@ export class World {
 		return Tag.all(entityId);
 	}
 
+	static setTimer(entityId: EntityId, key: string, ticks: number): void {
+		if (!Entity.isAlive(entityId)) {
+			throw new Error(`Entity ${entityId} is not alive`);
+		}
+		Timer.set(entityId, key, ticks);
+	}
+
+	static getTimer(entityId: EntityId, key: string): number | undefined {
+		return Timer.get(entityId, key);
+	}
+
+	static hasTimer(entityId: EntityId, key: string): boolean {
+		return Timer.has(entityId, key);
+	}
+
+	static removeTimer(entityId: EntityId, key: string): boolean {
+		return Timer.remove(entityId, key);
+	}
+
+	static extendTimer(
+		entityId: EntityId,
+		key: string,
+		additionalTicks: number,
+	): void {
+		Timer.extend(entityId, key, additionalTicks);
+	}
+
+	static getTimers(entityId: EntityId): TimerEntry[] {
+		return Timer.all(entityId);
+	}
+
 	static reset(): void {
 		Entity.reset();
 		Component.reset();
 		Query.reset();
 		Tag.reset();
+		Timer.reset();
 	}
 
 	static flushDirty(): void {
