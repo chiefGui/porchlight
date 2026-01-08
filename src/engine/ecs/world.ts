@@ -6,6 +6,7 @@ import {
 } from "./component.ts";
 import { Entity, type EntityId } from "./entity.ts";
 import { Query, type QueryDescriptor } from "./query.ts";
+import { Tag } from "./tag.ts";
 
 export class World {
 	static createEntity(): EntityId {
@@ -18,6 +19,7 @@ export class World {
 		}
 
 		Component.removeAllFromEntity(entityId);
+		Tag.removeAllFromEntity(entityId);
 		return Entity.destroy(entityId);
 	}
 
@@ -93,14 +95,43 @@ export class World {
 		return entityId;
 	}
 
+	static addTag(entityId: EntityId, ...tags: string[]): void {
+		if (!Entity.isAlive(entityId)) {
+			throw new Error(`Entity ${entityId} is not alive`);
+		}
+		Tag.add(entityId, ...tags);
+	}
+
+	static removeTag(entityId: EntityId, ...tags: string[]): void {
+		Tag.remove(entityId, ...tags);
+	}
+
+	static hasTag(entityId: EntityId, tag: string): boolean {
+		return Tag.has(entityId, tag);
+	}
+
+	static hasAllTags(entityId: EntityId, ...tags: string[]): boolean {
+		return Tag.hasAll(entityId, ...tags);
+	}
+
+	static hasAnyTag(entityId: EntityId, ...tags: string[]): boolean {
+		return Tag.hasAny(entityId, ...tags);
+	}
+
+	static getTags(entityId: EntityId): string[] {
+		return Tag.all(entityId);
+	}
+
 	static reset(): void {
 		Entity.reset();
 		Component.reset();
 		Query.reset();
+		Tag.reset();
 	}
 
 	static flushDirty(): void {
 		Component.clearDirty();
+		Tag.clearDirty();
 	}
 }
 

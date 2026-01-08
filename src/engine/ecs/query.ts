@@ -6,6 +6,7 @@ import {
 	type ComponentMask,
 } from "./component.ts";
 import { Entity, type EntityId } from "./entity.ts";
+import { Tag, type TagDescriptor } from "./tag.ts";
 
 export type QueryDescriptor = {
 	all?: ComponentClass[];
@@ -26,14 +27,19 @@ export class Query<T extends ComponentInstance[] = ComponentInstance[]> {
 	private readonly anyMask: ComponentMask;
 	private readonly noneMask: ComponentMask;
 	private readonly allComponents: ComponentClass[];
+	private readonly tagDescriptor: TagDescriptor | null;
 
 	private cachedResults: EntityId[] | null = null;
 
-	private constructor(descriptor: QueryDescriptor) {
+	private constructor(
+		descriptor: QueryDescriptor,
+		tagDescriptor: TagDescriptor | null = null,
+	) {
 		this.allComponents = descriptor.all ?? [];
 		this.allMask = Component.getMask(this.allComponents);
 		this.anyMask = Component.getMask(descriptor.any ?? []);
 		this.noneMask = Component.getMask(descriptor.none ?? []);
+		this.tagDescriptor = tagDescriptor;
 	}
 
 	static create<C extends ComponentClass[]>(
@@ -88,7 +94,39 @@ export class Query<T extends ComponentInstance[] = ComponentInstance[]> {
 			return false;
 		}
 
+		if (this.tagDescriptor !== null) {
+			if (!Tag.matchesDescriptor(entityId, this.tagDescriptor)) {
+				return false;
+			}
+		}
+
 		return true;
+	}
+
+	withTags(descriptor: TagDescriptor): Query<T> {
+		const tagKeyParts: string[] = [];
+		if (descriptor.all)
+			tagKeyParts.push(`tagAll:${descriptor.all.sort().join(",")}`);
+		if (descriptor.any)
+			tagKeyParts.push(`tagAny:${descriptor.any.sort().join(",")}`);
+		if (descriptor.none)
+			tagKeyParts.push(`tagNone:${descriptor.none.sort().join(",")}`);
+
+		const componentKeyParts: string[] = [];
+		if (this.allComponents.length > 0)
+			componentKeyParts.push(
+				`all:${this.allComponents.map((c) => c.name).join(",")}`,
+			);
+
+		const key = [...componentKeyParts, ...tagKeyParts].join("|");
+
+		if (Query.cache.has(key)) {
+			return Query.cache.get(key) as Query<T>;
+		}
+
+		const query = new Query<T>({ all: this.allComponents }, descriptor);
+		Query.cache.set(key, query as Query);
+		return query;
 	}
 
 	private invalidateIfDirty(): void {
@@ -96,8 +134,12 @@ export class Query<T extends ComponentInstance[] = ComponentInstance[]> {
 		for (const componentClass of this.allComponents) {
 			if (dirtyComponents.has(componentClass)) {
 				this.cachedResults = null;
-				break;
+				return;
 			}
+		}
+
+		if (this.tagDescriptor !== null && Tag.isDirty()) {
+			this.cachedResults = null;
 		}
 	}
 

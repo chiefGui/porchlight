@@ -4,6 +4,7 @@ import {
 	type ComponentInstance,
 	Entity,
 	type EntityId,
+	Tag,
 } from "../ecs/index.ts";
 
 export type SerializedComponent = {
@@ -14,6 +15,7 @@ export type SerializedComponent = {
 export type SerializedEntity = {
 	id: EntityId;
 	components: SerializedComponent[];
+	tags: string[];
 };
 
 export type SerializedGameState = {
@@ -53,7 +55,10 @@ export class Serializer {
 
 		for (const entityId of Entity.all()) {
 			const serializedEntity = Serializer.serializeEntity(entityId);
-			if (serializedEntity.components.length > 0) {
+			if (
+				serializedEntity.components.length > 0 ||
+				serializedEntity.tags.length > 0
+			) {
 				entities.push(serializedEntity);
 			}
 		}
@@ -79,7 +84,9 @@ export class Serializer {
 			}
 		}
 
-		return { id: entityId, components };
+		const tags = Tag.all(entityId);
+
+		return { id: entityId, components, tags };
 	}
 
 	private static serializeComponent(
@@ -112,6 +119,7 @@ export class Serializer {
 	static deserialize(state: SerializedGameState): void {
 		Entity.reset();
 		Component.reset();
+		Tag.reset();
 
 		Serializer.initialize();
 
@@ -136,6 +144,10 @@ export class Serializer {
 				);
 
 				Component.add(newId, componentClass, instance);
+			}
+
+			if (serializedEntity.tags && serializedEntity.tags.length > 0) {
+				Tag.add(newId, ...serializedEntity.tags);
 			}
 		}
 	}
