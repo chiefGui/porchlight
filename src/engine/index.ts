@@ -48,3 +48,16 @@ export {
 	Persistence,
 	Serializer,
 } from "./persistence/index.ts";
+export type { EngineProviderProps } from "./react/index.ts";
+export {
+	EngineProvider,
+	useComponent,
+	useComponentValue,
+	useEngineContext,
+	useEntity,
+	useGameLoop,
+	usePersistence,
+	useQuery,
+	useTick,
+	useWorld,
+} from "./react/index.ts";
