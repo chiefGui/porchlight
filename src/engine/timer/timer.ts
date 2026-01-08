@@ -7,10 +7,20 @@ export type TimerEntry = {
 	remaining: number;
 };
 
+export type TickTimeoutHandle = number;
+
+type TickTimeout = {
+	remaining: number;
+	callback: () => void;
+};
+
 export class Timer {
 	private static timers = new Map<EntityId, Map<string, number>>();
 	private static keyCallbacks = new Map<string, Set<TimerExpireCallback>>();
 	private static globalCallbacks = new Set<TimerExpireCallback>();
+
+	private static nextTimeoutId: TickTimeoutHandle = 1;
+	private static tickTimeouts = new Map<TickTimeoutHandle, TickTimeout>();
 
 	static set(entityId: EntityId, key: string, ticks: number): void {
 		if (!Entity.isAlive(entityId)) {
@@ -103,7 +113,44 @@ export class Timer {
 		};
 	}
 
+	static setTickTimeout(
+		ticks: number,
+		callback: () => void,
+	): TickTimeoutHandle {
+		if (ticks <= 0) {
+			callback();
+			return 0;
+		}
+
+		const handle = Timer.nextTimeoutId++;
+		Timer.tickTimeouts.set(handle, { remaining: ticks, callback });
+		return handle;
+	}
+
+	static clearTickTimeout(handle: TickTimeoutHandle): boolean {
+		return Timer.tickTimeouts.delete(handle);
+	}
+
 	static tick(): void {
+		// Process global tick timeouts
+		const expiredTimeouts: Array<() => void> = [];
+
+		for (const [handle, timeout] of Timer.tickTimeouts) {
+			const newRemaining = timeout.remaining - 1;
+
+			if (newRemaining <= 0) {
+				expiredTimeouts.push(timeout.callback);
+				Timer.tickTimeouts.delete(handle);
+			} else {
+				timeout.remaining = newRemaining;
+			}
+		}
+
+		for (const callback of expiredTimeouts) {
+			callback();
+		}
+
+		// Process entity-scoped timers
 		const expired: Array<{ entityId: EntityId; key: string }> = [];
 
 		for (const [entityId, entityTimers] of Timer.timers) {
@@ -157,5 +204,7 @@ export class Timer {
 		Timer.timers.clear();
 		Timer.keyCallbacks.clear();
 		Timer.globalCallbacks.clear();
+		Timer.tickTimeouts.clear();
+		Timer.nextTimeoutId = 1;
 	}
 }

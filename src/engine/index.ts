@@ -64,5 +64,9 @@ export {
 	useTick,
 	useWorld,
 } from "./react/index.ts";
-export type { TimerEntry, TimerExpireCallback } from "./timer/index.ts";
+export type {
+	TickTimeoutHandle,
+	TimerEntry,
+	TimerExpireCallback,
+} from "./timer/index.ts";
 export { Timer } from "./timer/index.ts";
