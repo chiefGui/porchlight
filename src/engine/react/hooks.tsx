@@ -137,6 +137,10 @@ export function useEntity(entityId: EntityId): {
 		componentClass: ComponentClass<T>,
 	) => T | undefined;
 	hasComponent: (componentClass: ComponentClass) => boolean;
+	hasTag: (tag: string) => boolean;
+	hasAllTags: (...tags: string[]) => boolean;
+	hasAnyTag: (...tags: string[]) => boolean;
+	getTags: () => string[];
 } {
 	const { tickCount } = useEngineContext();
 
@@ -152,10 +156,34 @@ export function useEntity(entityId: EntityId): {
 		return World.hasComponent(entityId, componentClass);
 	};
 
+	const hasTag = (tag: string): boolean => {
+		return World.hasTag(entityId, tag);
+	};
+
+	const hasAllTags = (...tags: string[]): boolean => {
+		return World.hasAllTags(entityId, ...tags);
+	};
+
+	const hasAnyTag = (...tags: string[]): boolean => {
+		return World.hasAnyTag(entityId, ...tags);
+	};
+
+	const getTags = (): string[] => {
+		return World.getTags(entityId);
+	};
+
 	// tickCount ensures component re-renders on each game tick
 	void tickCount;
 
-	return { isAlive, getComponent, hasComponent };
+	return {
+		isAlive,
+		getComponent,
+		hasComponent,
+		hasTag,
+		hasAllTags,
+		hasAnyTag,
+		getTags,
+	};
 }
 
 export function useComponent<T extends ComponentInstance>(
@@ -184,6 +212,12 @@ export function useWorld(): {
 	) => T | undefined;
 	hasComponent: (entityId: EntityId, componentClass: ComponentClass) => boolean;
 	entityCount: () => number;
+	addTag: (entityId: EntityId, ...tags: string[]) => void;
+	removeTag: (entityId: EntityId, ...tags: string[]) => void;
+	hasTag: (entityId: EntityId, tag: string) => boolean;
+	hasAllTags: (entityId: EntityId, ...tags: string[]) => boolean;
+	hasAnyTag: (entityId: EntityId, ...tags: string[]) => boolean;
+	getTags: (entityId: EntityId) => string[];
 } {
 	return {
 		createEntity: World.createEntity,
@@ -193,6 +227,12 @@ export function useWorld(): {
 		getComponent: World.getComponent,
 		hasComponent: World.hasComponent,
 		entityCount: World.entityCount,
+		addTag: World.addTag,
+		removeTag: World.removeTag,
+		hasTag: World.hasTag,
+		hasAllTags: World.hasAllTags,
+		hasAnyTag: World.hasAnyTag,
+		getTags: World.getTags,
 	};
 }
 
