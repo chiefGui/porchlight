@@ -2,6 +2,7 @@ export type {
 	ComponentClass,
 	ComponentInstance,
 	ComponentMask,
+	ComponentRegistrationCallback,
 } from "./component.ts";
 export { Component, ComponentDecorator } from "./component.ts";
 export type { EntityId } from "./entity.ts";

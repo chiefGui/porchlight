@@ -10,6 +10,7 @@ export type {
 	ComponentClass,
 	ComponentInstance,
 	ComponentMask,
+	ComponentRegistrationCallback,
 	EntityId,
 	QueryDescriptor,
 	QueryResult,
@@ -34,3 +35,16 @@ export type {
 	TickContext,
 } from "./loop/index.ts";
 export { GameLoop } from "./loop/index.ts";
+export type {
+	PersistenceConfig,
+	PersistenceStrategy,
+	SerializedComponent,
+	SerializedEntity,
+	SerializedGameState,
+	StorageAdapter,
+} from "./persistence/index.ts";
+export {
+	IndexedDBAdapter,
+	Persistence,
+	Serializer,
+} from "./persistence/index.ts";

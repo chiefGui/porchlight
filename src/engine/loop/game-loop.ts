@@ -1,4 +1,5 @@
 import { System, type SystemClass, World } from "../ecs/index.ts";
+import { Persistence } from "../persistence/index.ts";
 import type { GameLoopConfig, TickCallback, TickContext } from "./types.ts";
 
 export class GameLoop {
@@ -40,6 +41,12 @@ export class GameLoop {
 		};
 	}
 
+	private static autoSave(): void {
+		if (Persistence.shouldAutoSave()) {
+			Persistence.save();
+		}
+	}
+
 	static tick(): TickContext {
 		const now = performance.now();
 		const deltaTime =
@@ -70,6 +77,7 @@ export class GameLoop {
 		}
 
 		GameLoop.lastTimestamp = now;
+		GameLoop.autoSave();
 
 		return context;
 	}
@@ -97,6 +105,7 @@ export class GameLoop {
 		}
 
 		GameLoop.lastTimestamp = now;
+		GameLoop.autoSave();
 
 		return context;
 	}
@@ -124,6 +133,7 @@ export class GameLoop {
 		}
 
 		GameLoop.lastTimestamp = now;
+		GameLoop.autoSave();
 
 		return context;
 	}
