@@ -1,11 +1,7 @@
 import "reflect-metadata";
 import { type Constructor, Container } from "../di/index.ts";
-import { Query } from "./query.ts";
-import {
-	type ComponentClass,
-	QUERY_METADATA_KEY,
-	SYSTEM_METADATA_KEY,
-} from "./types.ts";
+import type { ComponentClass } from "./component.ts";
+import { QUERY_METADATA_KEY, Query } from "./query.ts";
 
 export type SystemOptions = {
 	phase?: string;
@@ -16,6 +12,8 @@ export type SystemInstance = {
 };
 
 export type SystemClass = Constructor<SystemInstance>;
+
+export const SYSTEM_METADATA_KEY = Symbol("ecs:system");
 
 export class System {
 	private static registry = new Map<SystemClass, SystemOptions>();

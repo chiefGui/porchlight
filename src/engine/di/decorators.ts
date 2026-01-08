@@ -1,11 +1,11 @@
 import "reflect-metadata";
-import { Container } from "./container.ts";
 import {
 	type Constructor,
+	Container,
 	INJECT_METADATA_KEY,
 	INJECTABLE_METADATA_KEY,
 	type Token,
-} from "./types.ts";
+} from "./container.ts";
 
 export function Injectable(): ClassDecorator {
 	return (target) => {

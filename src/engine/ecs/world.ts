@@ -1,13 +1,11 @@
 import { type Constructor, Container } from "../di/index.ts";
-import { Component } from "./component.ts";
-import { Entity } from "./entity.ts";
-import { Query } from "./query.ts";
-import type {
-	ComponentClass,
-	ComponentInstance,
-	EntityId,
-	QueryDescriptor,
-} from "./types.ts";
+import {
+	Component,
+	type ComponentClass,
+	type ComponentInstance,
+} from "./component.ts";
+import { Entity, type EntityId } from "./entity.ts";
+import { Query, type QueryDescriptor } from "./query.ts";
 
 export class World {
 	static createEntity(): EntityId {

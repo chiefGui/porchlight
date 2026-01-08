@@ -1,14 +1,23 @@
 import "reflect-metadata";
-import { Component } from "./component.ts";
-import { Entity } from "./entity.ts";
 import {
+	Component,
 	type ComponentClass,
 	type ComponentInstance,
 	type ComponentMask,
-	type EntityId,
-	QUERY_METADATA_KEY,
-	type QueryDescriptor,
-} from "./types.ts";
+} from "./component.ts";
+import { Entity, type EntityId } from "./entity.ts";
+
+export type QueryDescriptor = {
+	all?: ComponentClass[];
+	any?: ComponentClass[];
+	none?: ComponentClass[];
+};
+
+export type QueryResult<T extends ComponentInstance[]> = Iterable<
+	[EntityId, ...T]
+>;
+
+export const QUERY_METADATA_KEY = Symbol("ecs:query");
 
 export class Query<T extends ComponentInstance[] = ComponentInstance[]> {
 	private static cache = new Map<string, Query>();

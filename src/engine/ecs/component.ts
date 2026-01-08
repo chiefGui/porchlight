@@ -1,11 +1,14 @@
 import "reflect-metadata";
-import {
-	COMPONENT_METADATA_KEY,
-	type ComponentClass,
-	type ComponentInstance,
-	type ComponentMask,
-	type EntityId,
-} from "./types.ts";
+import type { Constructor } from "../di/index.ts";
+import type { EntityId } from "./entity.ts";
+
+export type ComponentClass<T = object> = Constructor<T>;
+
+export type ComponentInstance = object;
+
+export type ComponentMask = bigint;
+
+export const COMPONENT_METADATA_KEY = Symbol("ecs:component");
 
 export class Component {
 	private static nextBit = 0;

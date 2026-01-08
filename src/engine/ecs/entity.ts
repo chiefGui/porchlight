@@ -1,4 +1,6 @@
-import { type EntityId, NULL_ENTITY } from "./types.ts";
+export type EntityId = number;
+
+export const NULL_ENTITY: EntityId = 0;
 
 export class Entity {
 	private static nextId: EntityId = 1;
