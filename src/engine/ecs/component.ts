@@ -10,6 +10,10 @@ export type ComponentMask = bigint;
 
 export const COMPONENT_METADATA_KEY = Symbol("ecs:component");
 
+export type ComponentRegistrationCallback = (
+	componentClass: ComponentClass,
+) => void;
+
 export class Component {
 	private static nextBit = 0;
 	private static registry = new Map<ComponentClass, number>();
@@ -19,6 +23,22 @@ export class Component {
 	>();
 	private static entityMasks = new Map<EntityId, ComponentMask>();
 	private static dirty = new Set<ComponentClass>();
+	private static registrationCallbacks: ComponentRegistrationCallback[] = [];
+
+	static onRegister(callback: ComponentRegistrationCallback): () => void {
+		Component.registrationCallbacks.push(callback);
+
+		for (const componentClass of Component.registry.keys()) {
+			callback(componentClass);
+		}
+
+		return () => {
+			const index = Component.registrationCallbacks.indexOf(callback);
+			if (index !== -1) {
+				Component.registrationCallbacks.splice(index, 1);
+			}
+		};
+	}
 
 	static register<T extends ComponentInstance>(
 		componentClass: ComponentClass<T>,
@@ -32,6 +52,10 @@ export class Component {
 		Component.storage.set(componentClass, new Map());
 
 		Reflect.defineMetadata(COMPONENT_METADATA_KEY, bit, componentClass);
+
+		for (const callback of Component.registrationCallbacks) {
+			callback(componentClass);
+		}
 
 		return bit;
 	}
@@ -148,6 +172,7 @@ export class Component {
 		Component.storage.clear();
 		Component.entityMasks.clear();
 		Component.dirty.clear();
+		Component.registrationCallbacks = [];
 	}
 }
 
