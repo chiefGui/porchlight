@@ -22,13 +22,13 @@ export type {
 } from "./ecs/index.ts";
 export {
 	Component,
-	ComponentDecorator,
+	component,
 	Entity,
 	NULL_ENTITY,
 	Query,
-	QueryDecorator,
+	query,
 	System,
-	SystemDecorator,
+	system,
 	Tag,
 	World,
 } from "./ecs/index.ts";
