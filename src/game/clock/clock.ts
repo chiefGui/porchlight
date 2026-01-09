@@ -3,7 +3,7 @@ import { GameCalendar, type DayPeriod, type GameDate } from "../calendar/index.t
 type ClockListener = () => void;
 
 export class Clock {
-	private static current: GameDate = { year: 2026, month: 1, day: 1, hour: 8 };
+	private static current: GameDate = { year: 2026, month: 1, day: 1, hour: 6 };
 	private static listeners: Set<ClockListener> = new Set();
 
 	static get(): GameDate {
@@ -25,7 +25,7 @@ export class Clock {
 	}
 
 	static reset(): void {
-		Clock.current = { year: 2026, month: 1, day: 1, hour: 8 };
+		Clock.current = { year: 2026, month: 1, day: 1, hour: 6 };
 		Clock.notify();
 	}
 

@@ -21,9 +21,11 @@ export function Header(): React.ReactElement {
 	const period = Clock.period();
 	const dateFormatted = GameCalendar.formatHuman(currentDate);
 
-	// Calculate day progress (0-100%)
+	// Calculate day progress (0-100%), treating 6 AM as day start
+	// This way morning starts at 0% and feels like a fresh day
 	const hour = currentDate.hour ?? 0;
-	const progress = (hour / 24) * 100;
+	const DAY_START_HOUR = 6; // Morning starts at 6 AM
+	const progress = (((hour - DAY_START_HOUR + 24) % 24) / 24) * 100;
 
 	return (
 		<>
