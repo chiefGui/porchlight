@@ -1,8 +1,10 @@
 import { createRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { ChatUtil } from "../../game/chat/index.ts";
 import { Player } from "../../game/player/index.ts";
-import { ContactList } from "../chat/contact-list.tsx";
+import { ContactList } from "../chat/index.ts";
 import { Footer, FooterButton } from "../layout/footer.tsx";
+import { Page } from "../layout/page.tsx";
+import { BackButton, PageHeader } from "../layout/page-header.tsx";
 import { rootRoute } from "./root.tsx";
 
 export const chatRoute = createRoute({
@@ -24,36 +26,37 @@ function ChatPage(): React.ReactElement {
 	const contacts = ChatUtil.getContacts(playerId);
 
 	return (
-		<>
-			<main className="pb-16 min-h-screen flex flex-col">
-				<header className="p-4 border-b border-border">
-					<h1 className="text-xl font-semibold">Messages</h1>
-				</header>
-				<div className="flex-1">
-					<ContactList
-						contacts={contacts}
-						playerId={playerId}
-						onSelectContact={(contactId) =>
-							navigate({ to: "/chat/$contactId", params: { contactId: String(contactId) } })
-						}
+		<Page
+			header={
+				<PageHeader
+					left={<BackButton onClick={() => navigate({ to: "/game" })} />}
+					center={<h1 className="text-lg font-semibold">Messages</h1>}
+				/>
+			}
+			footer={
+				<Footer>
+					<FooterButton
+						icon={<HomeIcon />}
+						label="Home"
+						onClick={() => navigate({ to: "/game" })}
 					/>
-				</div>
-			</main>
-
-			<Footer>
-				<FooterButton
-					icon={<HomeIcon />}
-					label="Home"
-					onClick={() => navigate({ to: "/game" })}
-				/>
-				<FooterButton
-					icon={<ChatIcon />}
-					label="Chat"
-					active
-					badge={ChatUtil.getUnreadCount(playerId)}
-				/>
-			</Footer>
-		</>
+					<FooterButton
+						icon={<ChatIcon />}
+						label="Chat"
+						active
+						badge={ChatUtil.getUnreadCount(playerId)}
+					/>
+				</Footer>
+			}
+		>
+			<ContactList
+				contacts={contacts}
+				playerId={playerId}
+				onSelectContact={(contactId) =>
+					navigate({ to: "/chat/$contactId", params: { contactId: String(contactId) } })
+				}
+			/>
+		</Page>
 	);
 }
 
