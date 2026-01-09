@@ -24,12 +24,12 @@ export {
 	type TraitStrategy,
 } from "./character/index.ts";
 
-export { Clock, ClockUtil } from "./clock/index.ts";
+export { Clock } from "./clock/index.ts";
 
 export { Inventory, InventoryUtil } from "./inventory/index.ts";
 
 export { Stamina, StaminaUtil } from "./stamina/index.ts";
 
-export { Employment, EmploymentUtil } from "./employment/index.ts";
+export { CharacterJob, JobUtil } from "./job/index.ts";
 
 export { ActivityUtil } from "./activity/index.ts";

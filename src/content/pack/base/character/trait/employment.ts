@@ -1,5 +1,5 @@
 import { World } from "../../../../../engine/index.ts";
-import { Employment } from "../../../../../game/employment/index.ts";
+import { CharacterJob } from "../../../../../game/job/index.ts";
 import { defineInferredTrait } from "../../../../character/trait.ts";
 
 export const employed = defineInferredTrait({
@@ -8,8 +8,8 @@ export const employed = defineInferredTrait({
 	category: "employment",
 	exclusive: ["unemployed"],
 	infer: (context) => {
-		const employment = World.getComponent(context.entity, Employment);
-		return employment?.jobId != null;
+		const job = World.getComponent(context.entity, CharacterJob);
+		return job?.id != null;
 	},
 });
 
@@ -19,7 +19,7 @@ export const unemployed = defineInferredTrait({
 	category: "employment",
 	exclusive: ["employed"],
 	infer: (context) => {
-		const employment = World.getComponent(context.entity, Employment);
-		return employment?.jobId == null;
+		const job = World.getComponent(context.entity, CharacterJob);
+		return job?.id == null;
 	},
 });

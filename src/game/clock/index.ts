@@ -1,2 +1,1 @@
-export * from "./clock.component.ts";
-export * from "./clock.util.ts";
+export * from "./clock.ts";

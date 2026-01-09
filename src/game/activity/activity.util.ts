@@ -6,15 +6,14 @@ import {
 	type ActivityEffects,
 } from "../../content/activity/index.ts";
 import type { DayPeriod } from "../calendar/index.ts";
-import { ClockUtil } from "../clock/index.ts";
+import { Clock } from "../clock/index.ts";
 import { InventoryUtil } from "../inventory/index.ts";
 import { StaminaUtil } from "../stamina/index.ts";
-import { EmploymentUtil } from "../employment/index.ts";
+import { JobUtil } from "../job/index.ts";
 
 export class ActivityUtil {
 	static getAvailable(entity: EntityId): Activity[] {
-		const period = ClockUtil.period(entity);
-		if (!period) return [];
+		const period = Clock.period();
 
 		const activities = ActivityRegistry.getByPeriod(period);
 		return activities.filter((activity) =>
@@ -26,8 +25,8 @@ export class ActivityUtil {
 		const activity = ActivityRegistry.get(activityId);
 		if (!activity) return false;
 
-		const period = ClockUtil.period(entity);
-		if (!period || !activity.periods.includes(period)) return false;
+		const period = Clock.period();
+		if (!activity.periods.includes(period)) return false;
 
 		const requires = activity.requires;
 		if (!requires) return true;
@@ -73,7 +72,7 @@ export class ActivityUtil {
 			}
 		}
 
-		ClockUtil.advance(entity, activity.duration);
+		Clock.advance(activity.duration);
 
 		return true;
 	}
@@ -83,7 +82,7 @@ export class ActivityUtil {
 			return activity.effects;
 		}
 
-		const job = EmploymentUtil.getJob(entity);
+		const job = JobUtil.get(entity);
 		if (!job) {
 			return activity.effects;
 		}
@@ -94,7 +93,7 @@ export class ActivityUtil {
 		};
 	}
 
-	static getCurrentPeriod(entity: EntityId): DayPeriod | undefined {
-		return ClockUtil.period(entity);
+	static getCurrentPeriod(): DayPeriod {
+		return Clock.period();
 	}
 }
