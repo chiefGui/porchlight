@@ -3,7 +3,7 @@ import { useState } from "react";
 import type { EntityId } from "../../engine/index.ts";
 import { CharacterGenerator } from "../../game/character/character-generator.ts";
 import { Player } from "../../game/player/index.ts";
-import { WorldGenerator } from "../../game/world/index.ts";
+import { GameSetup } from "../../game/world/index.ts";
 import { GameView } from "../game/game-view.tsx";
 import { Button } from "../primitive/button.tsx";
 import { rootRoute } from "./root.tsx";
@@ -28,13 +28,8 @@ function IndexPage(): React.ReactElement {
 		});
 		Player.set(entityId);
 
-		// Generate NPCs with relationships
-		WorldGenerator.generate({
-			playerId: entityId,
-			friendCount: 3,
-			familyCount: 2,
-			acquaintanceCount: 2,
-		});
+		// Initialize the game with the inheritance storyline
+		GameSetup.initialize(entityId);
 
 		setCharacterId(entityId);
 	};

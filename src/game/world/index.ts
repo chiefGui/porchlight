@@ -1,5 +1,1 @@
-export {
-	WorldGenerator,
-	type WorldGeneratorOptions,
-	type WorldGeneratorResult,
-} from "./world-generator.ts";
+export { GameSetup } from "./game-setup.ts";
