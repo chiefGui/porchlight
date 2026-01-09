@@ -1,4 +1,5 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { Header } from "../layout/header.tsx";
 
 export const rootRoute = createRootRoute({
 	component: RootLayout,
@@ -15,6 +16,7 @@ export const rootRoute = createRootRoute({
 function RootLayout(): React.ReactElement {
 	return (
 		<div className="min-h-screen bg-background text-foreground">
+			<Header />
 			<Outlet />
 		</div>
 	);

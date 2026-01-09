@@ -42,10 +42,20 @@ export class GameCalendar {
 		return GameCalendar.daysInMonth[month - 1] ?? 30;
 	}
 
+	private static readonly monthNames = [
+		"Jan", "Feb", "Mar", "Apr", "May", "Jun",
+		"Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+	];
+
 	static format(date: GameDate): string {
 		const month = String(date.month).padStart(2, "0");
 		const day = String(date.day).padStart(2, "0");
 		return `${month}/${day}/${date.year}`;
+	}
+
+	static formatHuman(date: GameDate): string {
+		const monthName = GameCalendar.monthNames[date.month - 1] ?? "???";
+		return `${monthName} ${date.day} ${date.year}`;
 	}
 
 	static formatWithTime(date: GameDate): string {
