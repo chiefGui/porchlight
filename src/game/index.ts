@@ -1,4 +1,8 @@
-export { GameCalendar, type GameDate } from "./calendar/index.ts";
+export {
+	GameCalendar,
+	type GameDate,
+	type DayPeriod,
+} from "./calendar/index.ts";
 
 export {
 	type BatchFromArchetypeOptions,
@@ -19,3 +23,13 @@ export {
 	type TraitPickOptions,
 	type TraitStrategy,
 } from "./character/index.ts";
+
+export { Clock, ClockUtil } from "./clock/index.ts";
+
+export { Inventory, InventoryUtil } from "./inventory/index.ts";
+
+export { Stamina, StaminaUtil } from "./stamina/index.ts";
+
+export { Employment, EmploymentUtil } from "./employment/index.ts";
+
+export { ActivityUtil } from "./activity/index.ts";
