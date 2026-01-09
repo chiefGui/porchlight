@@ -23,7 +23,7 @@
 		"@tailwindcss/vite": "^4.1.18",
 		"@tanstack/react-router": "^1.146.2",
 		"clsx": "^2.1.1",
-		"framer-motion": "^12.24.12",
+		"motion": "^12.24.12",
 		"react": "^19.2.3",
 		"react-dom": "^19.2.3",
 		"reflect-metadata": "^0.2.2",
