@@ -1,3 +1,4 @@
+import { TraitRegistry, type Trait } from "../../content/character/trait.ts";
 import type { EntityId } from "../../engine/index.ts";
 import { useEntity } from "../../engine/react/index.ts";
 import { GameCalendar } from "../../game/calendar/index.ts";
@@ -49,17 +50,20 @@ export function CharacterDrawer({
 
 	const tags = entity.getTags();
 
-	// Categorize traits
-	const lifeStage = tags.find((t) =>
-		["child", "teen", "adult", "elder"].includes(t),
-	);
-	const culture = tags.find((t) => ["american", "canadian"].includes(t));
-	const personalityTraits = tags.filter(
-		(t) =>
-			t !== lifeStage &&
-			t !== culture &&
-			!["employed", "unemployed"].includes(t),
-	);
+	// Group traits by category using the registry
+	const traitsByCategory = tags.reduce<Record<string, Trait[]>>((acc, tag) => {
+		const trait = TraitRegistry.get(tag);
+		if (trait) {
+			const category = trait.category;
+			acc[category] = acc[category] || [];
+			acc[category].push(trait);
+		}
+		return acc;
+	}, {});
+
+	const lifeStageTraits = traitsByCategory["life-stage"] || [];
+	const cultureTraits = traitsByCategory["culture"] || [];
+	const personalityTraits = traitsByCategory["personality"] || [];
 
 	return (
 		<Drawer side="right" open={open} onOpenChange={onOpenChange}>
@@ -86,16 +90,26 @@ export function CharacterDrawer({
 						</div>
 					</section>
 
-					{/* Life Stage & Culture */}
-					<section className="space-y-3">
-						<h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
-							Background
-						</h3>
-						<div className="flex flex-wrap gap-2">
-							{lifeStage && <TraitBadge trait={lifeStage} variant="life-stage" />}
-							{culture && <TraitBadge trait={culture} variant="culture" />}
-						</div>
-					</section>
+					{/* Background (Life Stage & Culture) */}
+					{(lifeStageTraits.length > 0 || cultureTraits.length > 0) && (
+						<section className="space-y-3">
+							<h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+								Background
+							</h3>
+							<div className="flex flex-wrap gap-2">
+								{lifeStageTraits.map((trait) => (
+									<TraitBadge
+										key={trait.id}
+										trait={trait}
+										variant="life-stage"
+									/>
+								))}
+								{cultureTraits.map((trait) => (
+									<TraitBadge key={trait.id} trait={trait} variant="culture" />
+								))}
+							</div>
+						</section>
+					)}
 
 					{/* Personality */}
 					{personalityTraits.length > 0 && (
@@ -105,7 +119,11 @@ export function CharacterDrawer({
 							</h3>
 							<div className="flex flex-wrap gap-2">
 								{personalityTraits.map((trait) => (
-									<TraitBadge key={trait} trait={trait} variant="personality" />
+									<TraitBadge
+										key={trait.id}
+										trait={trait}
+										variant="personality"
+									/>
 								))}
 							</div>
 						</section>
@@ -129,7 +147,7 @@ function InfoRow({
 }
 
 type TraitBadgeProps = {
-	trait: string;
+	trait: Trait;
 	variant: "personality" | "culture" | "life-stage";
 };
 
@@ -142,9 +160,9 @@ function TraitBadge({ trait, variant }: TraitBadgeProps): React.ReactElement {
 
 	return (
 		<span
-			className={`px-3 py-1 rounded-full text-sm capitalize ${variantClasses[variant]}`}
+			className={`px-3 py-1 rounded-full text-sm ${variantClasses[variant]}`}
 		>
-			{trait}
+			{trait.name}
 		</span>
 	);
 }
