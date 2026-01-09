@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import type { EntityId } from "../../engine/index.ts";
 import { ChatUtil, type ChatThread } from "../../game/chat/index.ts";
 import { cn } from "../lib/cn.ts";
-import { formatMessageTime } from "../lib/time.ts";
+import { DateUtil } from "../lib/date.util.ts";
 
 type MessageListProps = {
 	thread: ChatThread;
@@ -64,7 +64,7 @@ export function MessageList({
 							</p>
 						</div>
 						<span className="text-[10px] text-muted-foreground mt-1 px-1">
-							{formatMessageTime(message.sentAt)}
+							{DateUtil.formatMessageTime(message.sentAt)}
 						</span>
 					</div>
 				);
