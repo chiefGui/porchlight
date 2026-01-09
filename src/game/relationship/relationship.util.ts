@@ -247,7 +247,7 @@ export class RelationshipUtil {
 				for (const trait of interaction.sameTraitBonus.traits) {
 					if (sourceTraits.has(trait) && targetTraits.has(trait)) {
 						sources.push({
-							label: `Both ${trait}`,
+							label: `Shared ${trait} trait`,
 							value: interaction.sameTraitBonus.bonus,
 							type: "positive",
 						});
@@ -260,7 +260,7 @@ export class RelationshipUtil {
 				for (const trait of interaction.sameTraitPenalty.traits) {
 					if (sourceTraits.has(trait) && targetTraits.has(trait)) {
 						sources.push({
-							label: `Both ${trait}`,
+							label: `Shared ${trait} trait`,
 							value: -interaction.sameTraitPenalty.penalty,
 							type: "negative",
 						});
@@ -273,13 +273,13 @@ export class RelationshipUtil {
 				for (const pair of interaction.opposingTraits) {
 					if (sourceTraits.has(pair.trait1) && targetTraits.has(pair.trait2)) {
 						sources.push({
-							label: `${pair.trait1} vs ${pair.trait2}`,
+							label: `Your ${pair.trait1} vs their ${pair.trait2}`,
 							value: -pair.penalty,
 							type: "negative",
 						});
 					} else if (sourceTraits.has(pair.trait2) && targetTraits.has(pair.trait1)) {
 						sources.push({
-							label: `${pair.trait2} vs ${pair.trait1}`,
+							label: `Your ${pair.trait2} vs their ${pair.trait1}`,
 							value: -pair.penalty,
 							type: "negative",
 						});
@@ -292,13 +292,13 @@ export class RelationshipUtil {
 				for (const pair of interaction.complementaryTraits) {
 					if (sourceTraits.has(pair.trait1) && targetTraits.has(pair.trait2)) {
 						sources.push({
-							label: `${pair.trait1} + ${pair.trait2}`,
+							label: `Your ${pair.trait1} + their ${pair.trait2}`,
 							value: pair.bonus,
 							type: "positive",
 						});
 					} else if (sourceTraits.has(pair.trait2) && targetTraits.has(pair.trait1)) {
 						sources.push({
-							label: `${pair.trait2} + ${pair.trait1}`,
+							label: `Your ${pair.trait2} + their ${pair.trait1}`,
 							value: pair.bonus,
 							type: "positive",
 						});
