@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import "./styles/globals.css";
+import "./ui/index.css";
 
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { App } from "./app.tsx";
+import { App } from "./ui/app.tsx";
 
 const rootElement = document.getElementById("root");
 if (!rootElement) {

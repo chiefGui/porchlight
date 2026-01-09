@@ -1,5 +1,5 @@
 import { tv, type VariantProps } from "tailwind-variants";
-import { cn } from "../../lib/utils.ts";
+import { cn } from "../util/cn.ts";
 
 export const buttonVariants = tv({
 	base: [

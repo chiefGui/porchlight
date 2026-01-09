@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Button } from "./components/ui/button.tsx";
-import type { EntityId } from "./engine/index.ts";
-import { World } from "./engine/index.ts";
-import { GameCalendar, type GameDate } from "./game/calendar/index.ts";
-import { CharacterGenerator } from "./game/character/character-generator.ts";
-import { CharacterIdentity } from "./game/character/identity.ts";
+import type { EntityId } from "../engine/index.ts";
+import { World } from "../engine/index.ts";
+import { GameCalendar, type GameDate } from "../game/calendar/index.ts";
+import { CharacterGenerator } from "../game/character/character-generator.ts";
+import { CharacterIdentity } from "../game/character/identity.ts";
+import { Button } from "./component/button.tsx";
 
-import "./content/pack/base/index.ts";
+import "../content/pack/base/index.ts";
 
 const CURRENT_DATE: GameDate = { year: 2025, month: 6, day: 15 };
 
