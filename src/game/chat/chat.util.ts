@@ -37,6 +37,7 @@ export class ChatUtil {
 			senderId: fromId,
 			content,
 			timestamp: GameLoop.getTickCount(),
+			sentAt: Date.now(),
 			read: fromId === playerId, // Messages from player are already "read"
 			type: "text",
 		};

@@ -1,17 +1,13 @@
 import type { EntityId } from "../../engine/index.ts";
 import type { Contact } from "../../game/chat/index.ts";
-import { RelationshipUtil } from "../../game/relationship/index.ts";
-import { cn } from "../lib/cn.ts";
 
 type ContactListProps = {
 	contacts: Contact[];
-	playerId: EntityId;
 	onSelectContact: (contactId: EntityId) => void;
 };
 
 export function ContactList({
 	contacts,
-	playerId,
 	onSelectContact,
 }: ContactListProps): React.ReactElement {
 	if (contacts.length === 0) {
@@ -34,7 +30,6 @@ export function ContactList({
 				<ContactItem
 					key={contact.entityId}
 					contact={contact}
-					playerId={playerId}
 					onClick={() => onSelectContact(contact.entityId)}
 				/>
 			))}
@@ -44,18 +39,13 @@ export function ContactList({
 
 type ContactItemProps = {
 	contact: Contact;
-	playerId: EntityId;
 	onClick: () => void;
 };
 
 function ContactItem({
 	contact,
-	playerId,
 	onClick,
 }: ContactItemProps): React.ReactElement {
-	const opinion = RelationshipUtil.getEffectiveOpinion(playerId, contact.entityId);
-	const opinionColor = RelationshipUtil.getOpinionColor(opinion);
-
 	return (
 		<button
 			type="button"
@@ -84,20 +74,15 @@ function ContactItem({
 						</span>
 					)}
 				</div>
-				<div className="flex items-center gap-2 mt-0.5">
-					{contact.lastMessage ? (
-						<p className="text-sm text-muted-foreground truncate flex-1">
-							{contact.lastMessage}
-						</p>
-					) : (
-						<p className="text-sm text-muted-foreground/60 italic flex-1">
-							No messages yet
-						</p>
-					)}
-					<span className={cn("text-xs flex-shrink-0", opinionColor)}>
-						{opinion > 0 ? "+" : ""}{opinion}
-					</span>
-				</div>
+				{contact.lastMessage ? (
+					<p className="text-sm text-muted-foreground truncate mt-0.5">
+						{contact.lastMessage}
+					</p>
+				) : (
+					<p className="text-sm text-muted-foreground/60 italic mt-0.5">
+						No messages yet
+					</p>
+				)}
 			</div>
 		</button>
 	);

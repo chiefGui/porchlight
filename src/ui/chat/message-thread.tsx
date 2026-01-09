@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import type { EntityId } from "../../engine/index.ts";
 import { ChatUtil, type ChatThread } from "../../game/chat/index.ts";
 import { cn } from "../lib/cn.ts";
+import { DateUtil } from "../lib/date.util.ts";
 
 type MessageListProps = {
 	thread: ChatThread;
@@ -46,8 +47,8 @@ export function MessageList({
 					<div
 						key={message.id}
 						className={cn(
-							"flex",
-							isFromPlayer ? "justify-end" : "justify-start",
+							"flex flex-col",
+							isFromPlayer ? "items-end" : "items-start",
 						)}
 					>
 						<div
@@ -62,6 +63,9 @@ export function MessageList({
 								{message.content}
 							</p>
 						</div>
+						<span className="text-[10px] text-muted-foreground mt-1 px-1">
+							{DateUtil.formatMessageTime(message.sentAt)}
+						</span>
 					</div>
 				);
 			})}

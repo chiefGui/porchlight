@@ -5,7 +5,7 @@ import {
 	OpinionModifierRegistry,
 	RelationshipTypeRegistry,
 } from "./relationship.registry.ts";
-import type { Relationship, RelationshipEvent } from "./relationship.types.ts";
+import type { OpinionSource, Relationship, RelationshipEvent } from "./relationship.types.ts";
 
 /**
  * Utility class for managing relationships between characters.
@@ -217,6 +217,97 @@ export class RelationshipUtil {
 			relationship.opinion + traitModifier,
 			relationship.typeId,
 		);
+	}
+
+	/**
+	 * Get a detailed breakdown of opinion sources.
+	 */
+	static getOpinionBreakdown(
+		sourceId: EntityId,
+		targetId: EntityId,
+	): OpinionSource[] {
+		const relationship = RelationshipUtil.get(sourceId, targetId);
+		if (!relationship) return [];
+
+		const sources: OpinionSource[] = [];
+		const sourceTraits = new Set(Tag.all(sourceId));
+		const targetTraits = new Set(Tag.all(targetId));
+
+		// Base relationship opinion
+		sources.push({
+			label: "Base",
+			value: relationship.opinion,
+			type: relationship.opinion >= 0 ? "positive" : "negative",
+		});
+
+		// Trait interactions
+		for (const interaction of OpinionModifierRegistry.getTraitInteractions()) {
+			// Same trait bonus
+			if (interaction.sameTraitBonus) {
+				for (const trait of interaction.sameTraitBonus.traits) {
+					if (sourceTraits.has(trait) && targetTraits.has(trait)) {
+						sources.push({
+							label: `Both ${trait}`,
+							value: interaction.sameTraitBonus.bonus,
+							type: "positive",
+						});
+					}
+				}
+			}
+
+			// Same trait penalty
+			if (interaction.sameTraitPenalty) {
+				for (const trait of interaction.sameTraitPenalty.traits) {
+					if (sourceTraits.has(trait) && targetTraits.has(trait)) {
+						sources.push({
+							label: `Both ${trait}`,
+							value: -interaction.sameTraitPenalty.penalty,
+							type: "negative",
+						});
+					}
+				}
+			}
+
+			// Opposing traits
+			if (interaction.opposingTraits) {
+				for (const pair of interaction.opposingTraits) {
+					if (sourceTraits.has(pair.trait1) && targetTraits.has(pair.trait2)) {
+						sources.push({
+							label: `${pair.trait1} vs ${pair.trait2}`,
+							value: -pair.penalty,
+							type: "negative",
+						});
+					} else if (sourceTraits.has(pair.trait2) && targetTraits.has(pair.trait1)) {
+						sources.push({
+							label: `${pair.trait2} vs ${pair.trait1}`,
+							value: -pair.penalty,
+							type: "negative",
+						});
+					}
+				}
+			}
+
+			// Complementary traits
+			if (interaction.complementaryTraits) {
+				for (const pair of interaction.complementaryTraits) {
+					if (sourceTraits.has(pair.trait1) && targetTraits.has(pair.trait2)) {
+						sources.push({
+							label: `${pair.trait1} + ${pair.trait2}`,
+							value: pair.bonus,
+							type: "positive",
+						});
+					} else if (sourceTraits.has(pair.trait2) && targetTraits.has(pair.trait1)) {
+						sources.push({
+							label: `${pair.trait2} + ${pair.trait1}`,
+							value: pair.bonus,
+							type: "positive",
+						});
+					}
+				}
+			}
+		}
+
+		return sources;
 	}
 
 	/**

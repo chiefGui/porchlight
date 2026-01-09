@@ -23,11 +23,42 @@ export function PageHeader({
 				className,
 			)}
 		>
-			<div className="flex items-center justify-start w-16">{left}</div>
+			<div className="flex items-center justify-start w-12 flex-shrink-0">{left}</div>
 			<div className="flex-1 flex items-center justify-center min-w-0">
 				{center}
 			</div>
-			<div className="flex items-center justify-end w-16">{right}</div>
+			<div className="flex items-center justify-end w-12 flex-shrink-0">{right}</div>
+		</header>
+	);
+}
+
+type CompactHeaderProps = {
+	left?: React.ReactNode;
+	children: React.ReactNode;
+	right?: React.ReactNode;
+	className?: string;
+};
+
+/**
+ * Compact header with content flowing left-to-right after the back button.
+ * Used for chat threads where avatar/name should be adjacent to back button.
+ */
+export function CompactHeader({
+	left,
+	children,
+	right,
+	className,
+}: CompactHeaderProps): React.ReactElement {
+	return (
+		<header
+			className={cn(
+				"sticky top-0 z-40 flex items-center h-14 px-4 bg-background border-b border-border gap-2",
+				className,
+			)}
+		>
+			{left}
+			<div className="flex-1 min-w-0">{children}</div>
+			{right && <div className="flex-shrink-0">{right}</div>}
 		</header>
 	);
 }
