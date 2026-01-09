@@ -1,7 +1,7 @@
 import type { EntityId } from "../../engine/index.ts";
 import { World } from "../../engine/index.ts";
 import { JobRegistry, type Job } from "../../content/job/index.ts";
-import { Employment } from "./job.component.ts";
+import { Employment } from "./employment.component.ts";
 
 export class EmploymentUtil {
 	static getJobId(entity: EntityId): string | null {

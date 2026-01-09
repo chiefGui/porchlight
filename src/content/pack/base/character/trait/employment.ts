@@ -1,5 +1,5 @@
 import { World } from "../../../../../engine/index.ts";
-import { Employment } from "../../../../../game/job/index.ts";
+import { Employment } from "../../../../../game/employment/index.ts";
 import { defineInferredTrait } from "../../../../character/trait.ts";
 
 export const employed = defineInferredTrait({

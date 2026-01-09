@@ -9,7 +9,7 @@ import type { DayPeriod } from "../calendar/index.ts";
 import { Clock } from "../clock/index.ts";
 import { InventoryUtil } from "../inventory/index.ts";
 import { StaminaUtil } from "../stamina/index.ts";
-import { EmploymentUtil } from "../job/index.ts";
+import { EmploymentUtil } from "../employment/index.ts";
 
 export class ActivityUtil {
 	static getAvailable(entity: EntityId): Activity[] {
