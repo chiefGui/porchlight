@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Menu } from "lucide-react";
+import { useEngineContext } from "../../engine/react/index.ts";
 import { GameCalendar } from "../../game/calendar/index.ts";
 import { Clock } from "../../game/clock/index.ts";
 import { DayProgressCircle } from "../primitive/day-progress.tsx";
@@ -7,6 +8,10 @@ import { SystemMenu } from "./system-menu.tsx";
 
 export function Header(): React.ReactElement {
 	const [menuOpen, setMenuOpen] = useState(false);
+
+	// Subscribe to game ticks to re-render when time advances
+	const { tickCount } = useEngineContext();
+	void tickCount;
 
 	const currentDate = Clock.get();
 	const period = Clock.period();
