@@ -40,7 +40,6 @@ function ProfilePage(): React.ReactElement {
 	const identity = Component.get(characterId, CharacterIdentity);
 	const relationship = RelationshipUtil.get(playerId, characterId);
 	const opinion = RelationshipUtil.getEffectiveOpinion(playerId, characterId);
-	const opinionLabel = RelationshipUtil.getOpinionLabel(opinion);
 	const opinionBreakdown = RelationshipUtil.getOpinionBreakdown(playerId, characterId);
 	const allTraits = Tag.all(characterId);
 
@@ -56,6 +55,15 @@ function ProfilePage(): React.ReactElement {
 
 	const genderIcon = identity ? GENDER_ICONS[identity.gender] : null;
 	const cultureFlag = identity ? CULTURE_FLAGS[identity.culture] : null;
+
+	const getOpinionColor = (value: number): string => {
+		if (value >= 50) return "text-emerald-400";
+		if (value >= 20) return "text-green-400";
+		if (value >= 0) return "text-muted-foreground";
+		if (value >= -20) return "text-amber-400";
+		if (value >= -50) return "text-orange-400";
+		return "text-red-400";
+	};
 
 	return (
 		<Page
@@ -82,51 +90,34 @@ function ProfilePage(): React.ReactElement {
 						)}
 					</div>
 
-					<div className="mt-4 flex items-center gap-2">
-						<h2 className="text-2xl font-bold">{displayName}</h2>
-						{genderIcon && (
-							<span className={cn(
-								"text-xl",
-								identity?.gender === "male" ? "text-blue-400" : "text-pink-400"
-							)}>
-								{genderIcon}
-							</span>
-						)}
-					</div>
+					<h2 className="mt-4 text-2xl font-bold">{displayName}</h2>
 
 					{relationship && (
-						<p className="text-sm text-muted-foreground capitalize mt-1">
+						<p className="text-sm text-muted-foreground capitalize mt-1 flex items-center gap-1.5">
+							{genderIcon && (
+								<span className={identity?.gender === "male" ? "text-blue-400" : "text-pink-400"}>
+									{genderIcon}
+								</span>
+							)}
 							{relationship.typeId.replace(/_/g, " ")}
 						</p>
 					)}
 				</div>
 
-				{/* Opinion Card */}
+				{/* Opinion Section - CK3 style */}
 				<section className="rounded-xl bg-card p-4 shadow-sm">
-					<div className="flex items-center justify-between mb-3">
-						<span className="text-sm font-medium text-muted-foreground">
-							Opinion
+					<div className="flex items-baseline justify-between mb-4">
+						<span className="text-sm text-muted-foreground">
+							{identity?.firstName}'s Opinion of You
 						</span>
-						<span className={cn(
-							"text-2xl font-bold",
-							opinion >= 0 ? "text-green-500" : "text-red-500"
-						)}>
+						<span className={cn("text-2xl font-bold tabular-nums", getOpinionColor(opinion))}>
 							{opinion > 0 ? "+" : ""}{opinion}
 						</span>
 					</div>
 
-					{/* Progress bar */}
-					<div className="h-2 bg-muted rounded-full overflow-hidden mb-1">
-						<div
-							className="h-full bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 transition-all"
-							style={{ width: `${((opinion + 100) / 200) * 100}%` }}
-						/>
-					</div>
-					<p className="text-xs text-muted-foreground text-right">{opinionLabel}</p>
-
 					{/* Breakdown */}
 					{opinionBreakdown.length > 0 && (
-						<div className="space-y-2 pt-3 mt-3 border-t border-border">
+						<div className="space-y-1.5">
 							{opinionBreakdown.map((source, i) => (
 								<div key={i} className="flex items-center justify-between text-sm">
 									<span className="text-muted-foreground">
@@ -134,7 +125,7 @@ function ProfilePage(): React.ReactElement {
 									</span>
 									<span className={cn(
 										"font-medium tabular-nums",
-										source.type === "positive" ? "text-green-500" : "text-red-500"
+										source.type === "positive" ? "text-emerald-400" : "text-red-400"
 									)}>
 										{source.value > 0 ? "+" : ""}{source.value}
 									</span>
