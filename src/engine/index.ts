@@ -44,6 +44,7 @@ export type {
 	SerializedComponent,
 	SerializedEntity,
 	SerializedGameState,
+	SerializedRandomState,
 	StorageAdapter,
 } from "./persistence/index.ts";
 export {
@@ -51,6 +52,8 @@ export {
 	Persistence,
 	Serializer,
 } from "./persistence/index.ts";
+export type { WeightedOption } from "./random/index.ts";
+export { Random } from "./random/index.ts";
 export type { EngineProviderProps } from "./react/index.ts";
 export {
 	EngineProvider,

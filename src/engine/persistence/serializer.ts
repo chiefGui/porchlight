@@ -6,6 +6,7 @@ import {
 	type EntityId,
 	Tag,
 } from "../ecs/index.ts";
+import { Random } from "../random/index.ts";
 import { Timer, type TimerEntry } from "../timer/index.ts";
 
 export type SerializedComponent = {
@@ -20,11 +21,17 @@ export type SerializedEntity = {
 	timers: TimerEntry[];
 };
 
+export type SerializedRandomState = {
+	seed: number;
+	state: number;
+};
+
 export type SerializedGameState = {
 	version: number;
 	timestamp: number;
 	entities: SerializedEntity[];
 	metadata: Record<string, unknown>;
+	random?: SerializedRandomState;
 };
 
 export class Serializer {
@@ -71,6 +78,10 @@ export class Serializer {
 			timestamp: Date.now(),
 			entities,
 			metadata,
+			random: {
+				seed: Random.getSeed(),
+				state: Random.getState(),
+			},
 		};
 	}
 
@@ -125,6 +136,11 @@ export class Serializer {
 		Component.reset();
 		Tag.reset();
 		Timer.reset();
+
+		if (state.random) {
+			Random.seed(state.random.seed);
+			Random.setState(state.random.state);
+		}
 
 		Serializer.initialize();
 
