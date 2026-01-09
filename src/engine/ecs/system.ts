@@ -106,7 +106,7 @@ export class System {
 	}
 }
 
-export function SystemDecorator(options: SystemOptions = {}): ClassDecorator {
+export function system(options: SystemOptions = {}): ClassDecorator {
 	return (target) => {
 		Reflect.defineMetadata(SYSTEM_METADATA_KEY, options, target);
 		System.register(target as unknown as SystemClass, options);

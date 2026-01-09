@@ -176,7 +176,7 @@ export class Component {
 	}
 }
 
-export function ComponentDecorator(): ClassDecorator {
+export function component(): ClassDecorator {
 	return (target) => {
 		Component.register(target as unknown as ComponentClass);
 	};

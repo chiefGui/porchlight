@@ -204,7 +204,7 @@ export class Query<T extends ComponentInstance[] = ComponentInstance[]> {
 	}
 }
 
-export function QueryDecorator<C extends ComponentClass[]>(
+export function query<C extends ComponentClass[]>(
 	...components: C
 ): ParameterDecorator {
 	return (target, _propertyKey, parameterIndex) => {

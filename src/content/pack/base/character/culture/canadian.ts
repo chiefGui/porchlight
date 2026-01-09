@@ -1,0 +1,41 @@
+import { defineCulture } from "../../../../character/culture.ts";
+
+export const canadian = defineCulture({
+	id: "canadian",
+	male: [
+		{ value: "Liam", weight: 1.5 },
+		{ value: "Noah", weight: 1.4 },
+		{ value: "Oliver", weight: 1.3 },
+		{ value: "Ethan", weight: 1.2 },
+		{ value: "Lucas", weight: 1.2 },
+		{ value: "Benjamin", weight: 1.1 },
+		{ value: "Jack", weight: 1.1 },
+		{ value: "Alexander", weight: 1 },
+		{ value: "William", weight: 1 },
+		{ value: "Jacob", weight: 1 },
+	],
+	female: [
+		{ value: "Olivia", weight: 1.5 },
+		{ value: "Emma", weight: 1.4 },
+		{ value: "Charlotte", weight: 1.3 },
+		{ value: "Amelia", weight: 1.2 },
+		{ value: "Sophia", weight: 1.2 },
+		{ value: "Ava", weight: 1.1 },
+		{ value: "Chloe", weight: 1 },
+		{ value: "Mia", weight: 1 },
+		{ value: "Ella", weight: 1 },
+		{ value: "Harper", weight: 1 },
+	],
+	surname: [
+		{ value: "Smith", weight: 1.8 },
+		{ value: "Brown", weight: 1.5 },
+		{ value: "Tremblay", weight: 1.3 },
+		{ value: "Martin", weight: 1.2 },
+		{ value: "Roy", weight: 1.2 },
+		{ value: "Wilson", weight: 1.1 },
+		{ value: "MacDonald", weight: 1.1 },
+		{ value: "Gagnon", weight: 1 },
+		{ value: "Johnson", weight: 1 },
+		{ value: "Taylor", weight: 1 },
+	],
+});

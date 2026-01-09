@@ -1,28 +1,28 @@
 import {
-	ComponentDecorator,
+	component,
 	GameLoop,
 	type Query,
-	QueryDecorator,
-	SystemDecorator,
+	query,
+	system,
 	World,
 } from "./engine/index.ts";
 
-@ComponentDecorator()
+@component()
 class Position {
 	x = 0;
 	y = 0;
 }
 
-@ComponentDecorator()
+@component()
 class Health {
 	current = 100;
 	max = 100;
 }
 
-@SystemDecorator({ phase: "combat" })
+@system({ phase: "combat" })
 class DamageSystem {
 	constructor(
-		@QueryDecorator(Health) private readonly targets: Query<[Health]>,
+		@query(Health) private readonly targets: Query<[Health]>,
 	) {}
 
 	tick(): void {
@@ -34,10 +34,10 @@ class DamageSystem {
 	}
 }
 
-@SystemDecorator({ phase: "movement" })
+@system({ phase: "movement" })
 class MovementSystem {
 	constructor(
-		@QueryDecorator(Position) private readonly movers: Query<[Position]>,
+		@query(Position) private readonly movers: Query<[Position]>,
 	) {}
 
 	tick(): void {
