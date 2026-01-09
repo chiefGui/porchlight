@@ -1,6 +1,7 @@
 import { createRoute, useNavigate } from "@tanstack/react-router";
 import { CharacterGenerator } from "../../game/character/character-generator.ts";
 import { Player } from "../../game/player/index.ts";
+import { GameSetup } from "../../game/world/index.ts";
 import { Button } from "../primitive/button.tsx";
 import { rootRoute } from "./root.tsx";
 
@@ -12,15 +13,20 @@ export const indexRoute = createRoute({
 
 function IndexPage(): React.ReactElement {
 	const navigate = useNavigate();
-	const existingPlayer = Player.get();
+	const existingPlayer = Player.getCharacterId();
 
 	const handleNewGame = () => {
+		// Create the player character
 		const entityId = CharacterGenerator.fromArchetype({
 			archetype: "adult",
 			culture: "american",
 			traitsPerCategory: 3,
 		});
-		Player.set(entityId);
+		Player.setCharacterId(entityId);
+
+		// Initialize the game world
+		GameSetup.initialize();
+
 		navigate({ to: "/game" });
 	};
 

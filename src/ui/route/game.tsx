@@ -1,6 +1,7 @@
-import { createRoute, redirect } from "@tanstack/react-router";
+import { createRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { ActivityUtil } from "../../game/activity/index.ts";
+import { ChatUtil } from "../../game/chat/index.ts";
 import { Player } from "../../game/player/index.ts";
 import { Footer, FooterButton } from "../layout/footer.tsx";
 import { ActivityCard } from "../game/activity-card.tsx";
@@ -11,7 +12,7 @@ export const gameRoute = createRoute({
 	getParentRoute: () => rootRoute,
 	path: "/game",
 	beforeLoad: () => {
-		const playerId = Player.get();
+		const playerId = Player.getCharacterId();
 		if (!playerId) {
 			throw redirect({ to: "/" });
 		}
@@ -22,7 +23,8 @@ export const gameRoute = createRoute({
 
 function GamePage(): React.ReactElement {
 	const { playerId } = gameRoute.useRouteContext();
-	const [drawerOpen, setDrawerOpen] = useState(false);
+	const navigate = useNavigate();
+	const [characterDrawerOpen, setCharacterDrawerOpen] = useState(false);
 	const [, forceUpdate] = useState(0);
 
 	const handleActivity = (activityId: string) => {
@@ -60,19 +62,42 @@ function GamePage(): React.ReactElement {
 
 			<Footer>
 				<FooterButton
+					icon={<ChatIcon />}
+					label="Chat"
+					onClick={() => navigate({ to: "/chat" })}
+					badge={ChatUtil.getUnreadCount(playerId)}
+				/>
+				<FooterButton
 					icon={<UserIcon />}
 					label="Me"
-					active={drawerOpen}
-					onClick={() => setDrawerOpen(true)}
+					active={characterDrawerOpen}
+					onClick={() => setCharacterDrawerOpen(true)}
 				/>
 			</Footer>
 
 			<CharacterDrawer
 				characterId={playerId}
-				open={drawerOpen}
-				onOpenChange={setDrawerOpen}
+				open={characterDrawerOpen}
+				onOpenChange={setCharacterDrawerOpen}
 			/>
 		</>
+	);
+}
+
+function ChatIcon(): React.ReactElement {
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth="2"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			className="w-full h-full"
+		>
+			<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+		</svg>
 	);
 }
 

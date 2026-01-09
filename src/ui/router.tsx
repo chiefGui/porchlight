@@ -1,9 +1,16 @@
 import { createRouter } from "@tanstack/react-router";
+import { chatThreadRoute } from "./route/chat-thread.tsx";
+import { chatRoute } from "./route/chat.tsx";
 import { gameRoute } from "./route/game.tsx";
 import { indexRoute } from "./route/index.tsx";
 import { rootRoute } from "./route/root.tsx";
 
-const routeTree = rootRoute.addChildren([indexRoute, gameRoute]);
+const routeTree = rootRoute.addChildren([
+	indexRoute,
+	gameRoute,
+	chatRoute,
+	chatThreadRoute,
+]);
 
 export const router = createRouter({
 	routeTree,
