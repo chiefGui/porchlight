@@ -6,6 +6,7 @@ import "./character/culture/canadian.ts";
 import "./character/trait/personality.ts";
 import "./character/trait/life-stage.ts";
 import "./character/trait/employment.ts";
+import "./character/trait/gender.ts";
 
 // Archetypes
 import "./character/archetype/teenager.ts";
