@@ -1,21 +1,26 @@
+import { memo, useCallback } from "react";
 import type { Activity } from "../../content/activity/activity.ts";
 
 type ActivityCardProps = {
 	activity: Activity;
-	onSelect: () => void;
+	onSelect: (activityId: string) => void;
 };
 
-export function ActivityCard({
+export const ActivityCard = memo(function ActivityCard({
 	activity,
 	onSelect,
 }: ActivityCardProps): React.ReactElement {
 	const effects = activity.effects;
 
+	const handleClick = useCallback(() => {
+		onSelect(activity.id);
+	}, [onSelect, activity.id]);
+
 	return (
 		<button
 			type="button"
-			onClick={onSelect}
-			className="w-full text-left p-4 rounded-lg border border-border bg-card hover:bg-accent transition-colors"
+			onClick={handleClick}
+			className="w-full text-left p-4 rounded-lg border border-border bg-card hover:bg-accent active:bg-accent active:scale-[0.98] transition-all touch-manipulation"
 		>
 			<div className="flex justify-between items-start">
 				<div className="space-y-1">
@@ -48,4 +53,4 @@ export function ActivityCard({
 			</div>
 		</button>
 	);
-}
+});

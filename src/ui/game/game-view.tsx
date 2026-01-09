@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import type { EntityId } from "../../engine/index.ts";
 import { ActivityUtil } from "../../game/activity/index.ts";
 import { GameCalendar } from "../../game/calendar/index.ts";
@@ -15,10 +15,13 @@ export function GameView({ characterId }: GameViewProps): React.ReactElement {
 	const [drawerOpen, setDrawerOpen] = useState(false);
 	const [, forceUpdate] = useState(0);
 
-	const handleActivity = (activityId: string) => {
-		ActivityUtil.perform(characterId, activityId);
-		forceUpdate((n) => n + 1);
-	};
+	const handleActivity = useCallback(
+		(activityId: string) => {
+			ActivityUtil.perform(characterId, activityId);
+			forceUpdate((n) => n + 1);
+		},
+		[characterId],
+	);
 
 	const currentDate = Clock.get();
 	const period = Clock.period();
@@ -46,7 +49,7 @@ export function GameView({ characterId }: GameViewProps): React.ReactElement {
 								<ActivityCard
 									key={activity.id}
 									activity={activity}
-									onSelect={() => handleActivity(activity.id)}
+									onSelect={handleActivity}
 								/>
 							))}
 							{availableActivities.length === 0 && (
