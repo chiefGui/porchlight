@@ -6,6 +6,8 @@ import {
 	type EntityId,
 	Tag,
 } from "../ecs/index.ts";
+import { Random } from "../random/index.ts";
+import { Timer, type TimerEntry } from "../timer/index.ts";
 
 export type SerializedComponent = {
 	type: string;
@@ -16,6 +18,12 @@ export type SerializedEntity = {
 	id: EntityId;
 	components: SerializedComponent[];
 	tags: string[];
+	timers: TimerEntry[];
+};
+
+export type SerializedRandomState = {
+	seed: number;
+	state: number;
 };
 
 export type SerializedGameState = {
@@ -23,6 +31,7 @@ export type SerializedGameState = {
 	timestamp: number;
 	entities: SerializedEntity[];
 	metadata: Record<string, unknown>;
+	random?: SerializedRandomState;
 };
 
 export class Serializer {
@@ -57,7 +66,8 @@ export class Serializer {
 			const serializedEntity = Serializer.serializeEntity(entityId);
 			if (
 				serializedEntity.components.length > 0 ||
-				serializedEntity.tags.length > 0
+				serializedEntity.tags.length > 0 ||
+				serializedEntity.timers.length > 0
 			) {
 				entities.push(serializedEntity);
 			}
@@ -68,6 +78,10 @@ export class Serializer {
 			timestamp: Date.now(),
 			entities,
 			metadata,
+			random: {
+				seed: Random.getSeed(),
+				state: Random.getState(),
+			},
 		};
 	}
 
@@ -85,8 +99,9 @@ export class Serializer {
 		}
 
 		const tags = Tag.all(entityId);
+		const timers = Timer.all(entityId);
 
-		return { id: entityId, components, tags };
+		return { id: entityId, components, tags, timers };
 	}
 
 	private static serializeComponent(
@@ -120,6 +135,12 @@ export class Serializer {
 		Entity.reset();
 		Component.reset();
 		Tag.reset();
+		Timer.reset();
+
+		if (state.random) {
+			Random.seed(state.random.seed);
+			Random.setState(state.random.state);
+		}
 
 		Serializer.initialize();
 
@@ -148,6 +169,12 @@ export class Serializer {
 
 			if (serializedEntity.tags && serializedEntity.tags.length > 0) {
 				Tag.add(newId, ...serializedEntity.tags);
+			}
+
+			if (serializedEntity.timers && serializedEntity.timers.length > 0) {
+				for (const timer of serializedEntity.timers) {
+					Timer.set(newId, timer.key, timer.remaining);
+				}
 			}
 		}
 	}

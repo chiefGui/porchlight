@@ -4,6 +4,7 @@ export type {
 	SerializedComponent,
 	SerializedEntity,
 	SerializedGameState,
+	SerializedRandomState,
 } from "./serializer.ts";
 export { Serializer } from "./serializer.ts";
 export type { StorageAdapter } from "./storage-adapter.ts";

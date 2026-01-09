@@ -13,6 +13,7 @@ import {
 	GameLoop,
 	Persistence,
 	Query,
+	type TimerEntry,
 	World,
 } from "../index.ts";
 import type { TickContext } from "../loop/index.ts";
@@ -141,6 +142,9 @@ export function useEntity(entityId: EntityId): {
 	hasAllTags: (...tags: string[]) => boolean;
 	hasAnyTag: (...tags: string[]) => boolean;
 	getTags: () => string[];
+	getTimer: (key: string) => number | undefined;
+	hasTimer: (key: string) => boolean;
+	getTimers: () => TimerEntry[];
 } {
 	const { tickCount } = useEngineContext();
 
@@ -172,6 +176,18 @@ export function useEntity(entityId: EntityId): {
 		return World.getTags(entityId);
 	};
 
+	const getTimer = (key: string): number | undefined => {
+		return World.getTimer(entityId, key);
+	};
+
+	const hasTimer = (key: string): boolean => {
+		return World.hasTimer(entityId, key);
+	};
+
+	const getTimers = (): TimerEntry[] => {
+		return World.getTimers(entityId);
+	};
+
 	// tickCount ensures component re-renders on each game tick
 	void tickCount;
 
@@ -183,6 +199,9 @@ export function useEntity(entityId: EntityId): {
 		hasAllTags,
 		hasAnyTag,
 		getTags,
+		getTimer,
+		hasTimer,
+		getTimers,
 	};
 }
 
@@ -218,6 +237,16 @@ export function useWorld(): {
 	hasAllTags: (entityId: EntityId, ...tags: string[]) => boolean;
 	hasAnyTag: (entityId: EntityId, ...tags: string[]) => boolean;
 	getTags: (entityId: EntityId) => string[];
+	setTimer: (entityId: EntityId, key: string, ticks: number) => void;
+	getTimer: (entityId: EntityId, key: string) => number | undefined;
+	hasTimer: (entityId: EntityId, key: string) => boolean;
+	removeTimer: (entityId: EntityId, key: string) => boolean;
+	extendTimer: (
+		entityId: EntityId,
+		key: string,
+		additionalTicks: number,
+	) => void;
+	getTimers: (entityId: EntityId) => TimerEntry[];
 } {
 	return {
 		createEntity: World.createEntity,
@@ -233,6 +262,12 @@ export function useWorld(): {
 		hasAllTags: World.hasAllTags,
 		hasAnyTag: World.hasAnyTag,
 		getTags: World.getTags,
+		setTimer: World.setTimer,
+		getTimer: World.getTimer,
+		hasTimer: World.hasTimer,
+		removeTimer: World.removeTimer,
+		extendTimer: World.extendTimer,
+		getTimers: World.getTimers,
 	};
 }
 

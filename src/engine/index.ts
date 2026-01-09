@@ -17,6 +17,8 @@ export type {
 	SystemClass,
 	SystemInstance,
 	SystemOptions,
+	TagDescriptor,
+	TagMask,
 } from "./ecs/index.ts";
 export {
 	Component,
@@ -27,6 +29,7 @@ export {
 	QueryDecorator,
 	System,
 	SystemDecorator,
+	Tag,
 	World,
 } from "./ecs/index.ts";
 export type {
@@ -41,6 +44,7 @@ export type {
 	SerializedComponent,
 	SerializedEntity,
 	SerializedGameState,
+	SerializedRandomState,
 	StorageAdapter,
 } from "./persistence/index.ts";
 export {
@@ -48,6 +52,8 @@ export {
 	Persistence,
 	Serializer,
 } from "./persistence/index.ts";
+export type { WeightedOption } from "./random/index.ts";
+export { Random } from "./random/index.ts";
 export type { EngineProviderProps } from "./react/index.ts";
 export {
 	EngineProvider,
@@ -61,3 +67,9 @@ export {
 	useTick,
 	useWorld,
 } from "./react/index.ts";
+export type {
+	TickTimeoutHandle,
+	TimerEntry,
+	TimerExpireCallback,
+} from "./timer/index.ts";
+export { Timer } from "./timer/index.ts";
