@@ -9,7 +9,7 @@ import type { DayPeriod } from "../calendar/index.ts";
 import { Clock } from "../clock/index.ts";
 import { InventoryUtil } from "../inventory/index.ts";
 import { StaminaUtil } from "../stamina/index.ts";
-import { JobUtil } from "../job/index.ts";
+import { EmploymentUtil } from "../job/index.ts";
 
 export class ActivityUtil {
 	static getAvailable(entity: EntityId): Activity[] {
@@ -82,7 +82,7 @@ export class ActivityUtil {
 			return activity.effects;
 		}
 
-		const job = JobUtil.get(entity);
+		const job = EmploymentUtil.getJob(entity);
 		if (!job) {
 			return activity.effects;
 		}
