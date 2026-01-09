@@ -196,6 +196,8 @@ export function NavigationMenuLink({
 	const { push } = useNavigationMenu();
 
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+		// Stop propagation to prevent drawer's click-outside handler from closing
+		event.stopPropagation();
 		push(to);
 		onClick?.(event);
 	};
@@ -231,6 +233,8 @@ export function NavigationMenuBack({
 	}
 
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+		// Stop propagation to prevent drawer's click-outside handler from closing
+		event.stopPropagation();
 		pop();
 		onClick?.(event);
 	};
