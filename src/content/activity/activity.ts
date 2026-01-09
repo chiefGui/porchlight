@@ -15,6 +15,7 @@ export type Activity = {
 	id: string;
 	name: string;
 	description?: string;
+	parent?: string;
 	periods: DayPeriod[];
 	duration: number;
 	effects: ActivityEffects;
@@ -45,6 +46,20 @@ export class ActivityRegistry {
 
 	static getByPeriod(period: DayPeriod): Activity[] {
 		return ActivityRegistry.byPeriod.get(period) ?? [];
+	}
+
+	static getChildren(parentId: string | null): Activity[] {
+		const results: Activity[] = [];
+		for (const activity of ActivityRegistry.byId.values()) {
+			if ((activity.parent ?? null) === parentId) {
+				results.push(activity);
+			}
+		}
+		return results;
+	}
+
+	static getRoots(): Activity[] {
+		return ActivityRegistry.getChildren(null);
 	}
 
 	static all(): IterableIterator<Activity> {
