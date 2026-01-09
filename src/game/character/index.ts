@@ -6,6 +6,7 @@ export {
 	type GenerateOptions,
 } from "./character-generator.ts";
 export { CharacterIdentity, type Gender } from "./identity.ts";
+export { CharacterUtil } from "./character.util.ts";
 
 export {
 	type BirthdateCalculateOptions,

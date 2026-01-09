@@ -5,6 +5,9 @@ import {
 import { CultureRegistry } from "../../content/character/culture.ts";
 import { type EntityId, Random, World } from "../../engine/index.ts";
 import type { GameDate } from "../calendar/index.ts";
+import { Employment } from "../employment/index.ts";
+import { Inventory } from "../inventory/index.ts";
+import { Stamina } from "../stamina/index.ts";
 import { CharacterIdentity, type Gender } from "./identity.ts";
 import {
 	type BirthdateStrategy,
@@ -29,6 +32,9 @@ type BaseCharacterOptions = {
 	nameStrategy?: NameStrategy;
 	birthdateStrategy?: BirthdateStrategy;
 	traitStrategy?: TraitStrategy;
+	initialMoney?: number;
+	initialStamina?: number;
+	initialJobId?: string;
 };
 
 export type GenerateOptions = BaseCharacterOptions & {
@@ -89,6 +95,18 @@ export class CharacterGenerator {
 			birthDate,
 		});
 
+		World.addComponent(entity, Inventory, {
+			items: { money: options.initialMoney ?? 0 },
+		});
+
+		World.addComponent(entity, Stamina, {
+			value: options.initialStamina ?? 1,
+		});
+
+		World.addComponent(entity, Employment, {
+			jobId: options.initialJobId ?? null,
+		});
+
 		for (const traitId of traits) {
 			World.addTag(entity, traitId);
 		}
@@ -132,6 +150,9 @@ export class CharacterGenerator {
 			nameStrategy: options.nameStrategy,
 			birthdateStrategy: options.birthdateStrategy,
 			traitStrategy: options.traitStrategy,
+			initialMoney: options.initialMoney,
+			initialStamina: options.initialStamina,
+			initialJobId: options.initialJobId,
 		});
 	}
 
