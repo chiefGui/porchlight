@@ -26,7 +26,7 @@ export function SystemMenu({
 	onOpenChange,
 }: SystemMenuProps): React.ReactElement {
 	return (
-		<Drawer side="left" open={open} onOpenChange={onOpenChange}>
+		<Drawer side="right" open={open} onOpenChange={onOpenChange}>
 			<DrawerContent>
 				{/* Key resets navigation state when drawer closes/reopens */}
 				<NavigationMenu defaultView="main" key={open ? "open" : "closed"}>
