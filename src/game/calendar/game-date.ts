@@ -2,7 +2,10 @@ export type GameDate = {
 	year: number;
 	month: number;
 	day: number;
+	hour?: number;
 };
+
+export type DayPeriod = "morning" | "afternoon" | "evening" | "night";
 
 export class GameCalendar {
 	private static readonly daysInMonth = [
@@ -45,10 +48,19 @@ export class GameCalendar {
 		return `${month}/${day}/${date.year}`;
 	}
 
+	static formatWithTime(date: GameDate): string {
+		const dateStr = GameCalendar.format(date);
+		const hour = date.hour ?? 0;
+		const period = GameCalendar.periodOf(hour);
+		const periodName = period.charAt(0).toUpperCase() + period.slice(1);
+		return `${dateStr} - ${periodName}`;
+	}
+
 	static compare(a: GameDate, b: GameDate): number {
 		if (a.year !== b.year) return a.year - b.year;
 		if (a.month !== b.month) return a.month - b.month;
-		return a.day - b.day;
+		if (a.day !== b.day) return a.day - b.day;
+		return (a.hour ?? 0) - (b.hour ?? 0);
 	}
 
 	static isAfter(a: GameDate, b: GameDate): boolean {
@@ -61,5 +73,50 @@ export class GameCalendar {
 
 	static isEqual(a: GameDate, b: GameDate): boolean {
 		return GameCalendar.compare(a, b) === 0;
+	}
+
+	static periodOf(hour: number): DayPeriod {
+		if (hour >= 6 && hour < 12) return "morning";
+		if (hour >= 12 && hour < 18) return "afternoon";
+		if (hour >= 18 && hour < 22) return "evening";
+		return "night";
+	}
+
+	static advance(date: GameDate, hours = 1): GameDate {
+		let { year, month, day, hour = 0 } = date;
+
+		hour += hours;
+
+		while (hour >= 24) {
+			hour -= 24;
+			day += 1;
+
+			const daysInCurrentMonth = GameCalendar.daysInMonthOf(month);
+			if (day > daysInCurrentMonth) {
+				day = 1;
+				month += 1;
+
+				if (month > 12) {
+					month = 1;
+					year += 1;
+				}
+			}
+		}
+
+		while (hour < 0) {
+			hour += 24;
+			day -= 1;
+
+			if (day < 1) {
+				month -= 1;
+				if (month < 1) {
+					month = 12;
+					year -= 1;
+				}
+				day = GameCalendar.daysInMonthOf(month);
+			}
+		}
+
+		return { year, month, day, hour };
 	}
 }

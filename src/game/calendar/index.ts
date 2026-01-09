@@ -1,1 +1,1 @@
-export { GameCalendar, type GameDate } from "./game-date.ts";
+export { GameCalendar, type GameDate, type DayPeriod } from "./game-date.ts";

@@ -1,13 +1,3 @@
-export {
-	type AgeDistribution,
-	type CharacterArchetype,
-	CharacterArchetypeRegistry,
-	type Culture,
-	CultureRegistry,
-	defineCharacterArchetype,
-	defineCulture,
-	defineTrait,
-	type NameEntry,
-	type Trait,
-	TraitRegistry,
-} from "./character/index.ts";
+export * from "./character/index.ts";
+export * from "./job/index.ts";
+export * from "./activity/index.ts";
