@@ -1,3 +1,4 @@
+import { Button as AriaButton } from "@ariakit/react";
 import { tv, type VariantProps } from "tailwind-variants";
 import { cn } from "../lib/cn.ts";
 
@@ -5,7 +6,7 @@ export const buttonVariants = tv({
 	base: [
 		"inline-flex items-center justify-center gap-2",
 		"whitespace-nowrap rounded-md text-sm font-medium",
-		"transition-colors",
+		"transition-colors cursor-default",
 		"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
 		"disabled:pointer-events-none disabled:opacity-50",
 		"[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
@@ -36,7 +37,7 @@ export const buttonVariants = tv({
 
 export type ButtonVariants = VariantProps<typeof buttonVariants>;
 
-type ButtonProps = React.ComponentProps<"button"> & ButtonVariants;
+type ButtonProps = React.ComponentProps<typeof AriaButton> & ButtonVariants;
 
 export function Button({
 	className,
@@ -45,7 +46,7 @@ export function Button({
 	...props
 }: ButtonProps): React.ReactElement {
 	return (
-		<button
+		<AriaButton
 			className={cn(buttonVariants({ variant, size }), className)}
 			{...props}
 		/>

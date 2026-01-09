@@ -5,8 +5,8 @@ import { World } from "../../engine/index.ts";
 import { GameCalendar, type GameDate } from "../../game/calendar/index.ts";
 import { CharacterGenerator } from "../../game/character/character-generator.ts";
 import { CharacterIdentity } from "../../game/character/identity.ts";
-import { Button } from "../component/button.tsx";
 import { CharacterCard, type CharacterData } from "../game/character-card.tsx";
+import { Button } from "../primitive/button.tsx";
 import { rootRoute } from "./root.tsx";
 
 const CURRENT_DATE: GameDate = { year: 2025, month: 6, day: 15 };
