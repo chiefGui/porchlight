@@ -19,3 +19,6 @@ import "./activity/index.ts";
 
 // Relationships
 import "./relationship/index.ts";
+
+// World setup
+export { setupInitialContent } from "./world/index.ts";
