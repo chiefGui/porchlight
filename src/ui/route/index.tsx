@@ -16,7 +16,7 @@ export const indexRoute = createRoute({
 
 function IndexPage(): React.ReactElement {
 	const [characterId, setCharacterId] = useState<EntityId | null>(
-		() => Player.get(),
+		() => Player.getCharacterId(),
 	);
 
 	const handleNewGame = () => {
@@ -26,7 +26,7 @@ function IndexPage(): React.ReactElement {
 			culture: "american",
 			traitsPerCategory: 3,
 		});
-		Player.set(entityId);
+		Player.setCharacterId(entityId);
 
 		// Initialize the game world
 		GameSetup.initialize();

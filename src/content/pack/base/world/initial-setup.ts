@@ -8,7 +8,7 @@ import { RelationshipUtil } from "../../../../game/relationship/relationship.uti
  * Edit this file to customize the game's opening narrative.
  */
 export function setupInitialContent(): void {
-	const playerId = Player.get();
+	const playerId = Player.getCharacterId();
 	if (!playerId) return;
 
 	// Create the lawyer NPC
