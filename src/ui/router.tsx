@@ -4,7 +4,35 @@ import { rootRoute } from "./route/root.tsx";
 
 const routeTree = rootRoute.addChildren([indexRoute]);
 
-export const router = createRouter({ routeTree });
+export const router = createRouter({
+	routeTree,
+	defaultNotFoundComponent: () => (
+		<div className="min-h-screen flex items-center justify-center p-8">
+			<div className="text-center space-y-4">
+				<h1 className="text-4xl font-bold">404</h1>
+				<p className="text-muted-foreground">Page not found</p>
+				<p className="text-sm text-muted-foreground">
+					Current path: {window.location.pathname}
+				</p>
+			</div>
+		</div>
+	),
+	defaultPendingComponent: () => (
+		<div className="min-h-screen flex items-center justify-center">
+			<p>Loading...</p>
+		</div>
+	),
+	defaultErrorComponent: ({ error }) => (
+		<div className="min-h-screen flex items-center justify-center p-8">
+			<div className="text-center space-y-4">
+				<h1 className="text-2xl font-bold text-destructive">Route Error</h1>
+				<pre className="text-sm bg-muted p-4 rounded overflow-auto max-w-lg">
+					{error instanceof Error ? error.message : String(error)}
+				</pre>
+			</div>
+		</div>
+	),
+});
 
 declare module "@tanstack/react-router" {
 	interface Register {
