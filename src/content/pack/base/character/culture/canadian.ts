@@ -2,6 +2,7 @@ import { defineCulture } from "../../../../character/culture.ts";
 
 export const canadian = defineCulture({
 	id: "canadian",
+	name: "Canadian",
 	male: [
 		{ value: "Liam", weight: 1.5 },
 		{ value: "Noah", weight: 1.4 },

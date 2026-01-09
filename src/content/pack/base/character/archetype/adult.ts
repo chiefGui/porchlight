@@ -7,5 +7,5 @@ export const adult = defineCharacterArchetype({
 	ageDistribution: "prime",
 	traitCategories: ["personality"],
 	traitsPerCategory: 3,
-	tags: ["adult"],
+	// life-stage trait "adult" is now inferred from birthdate
 });

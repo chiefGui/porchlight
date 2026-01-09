@@ -14,6 +14,7 @@ import {
 	type NameStrategy,
 	type TraitStrategy,
 } from "./strategy/index.ts";
+import { syncInferredTraitsForEntity } from "./trait-sync.ts";
 
 type BaseCharacterOptions = {
 	currentDate: GameDate;
@@ -92,9 +93,15 @@ export class CharacterGenerator {
 			World.addTag(entity, traitId);
 		}
 
+		// Add culture as a trait
+		World.addTag(entity, culture.id);
+
 		for (const tag of options.extraTags ?? []) {
 			World.addTag(entity, tag);
 		}
+
+		// Sync inferred traits (e.g., life-stage based on birthdate)
+		syncInferredTraitsForEntity({ entity, currentDate: options.currentDate });
 
 		return entity;
 	}
