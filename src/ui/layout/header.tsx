@@ -1,14 +1,23 @@
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { Menu } from "lucide-react";
 import { GameCalendar } from "../../game/calendar/index.ts";
 import { Clock } from "../../game/clock/index.ts";
 import { DayProgressCircle } from "../primitive/day-progress.tsx";
 import { SystemMenu } from "./system-menu.tsx";
 
+function useClock() {
+	return useSyncExternalStore(
+		Clock.subscribe,
+		() => Clock.get(),
+		() => Clock.get(),
+	);
+}
+
 export function Header(): React.ReactElement {
 	const [menuOpen, setMenuOpen] = useState(false);
 
-	const currentDate = Clock.get();
+	// Subscribe to clock changes to re-render when time advances
+	const currentDate = useClock();
 	const period = Clock.period();
 	const dateFormatted = GameCalendar.formatHuman(currentDate);
 
