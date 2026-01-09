@@ -2,14 +2,13 @@ import { createRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import type { EntityId } from "../../engine/index.ts";
 import { World } from "../../engine/index.ts";
-import { GameCalendar, type GameDate } from "../../game/calendar/index.ts";
+import { GameCalendar } from "../../game/calendar/index.ts";
 import { CharacterGenerator } from "../../game/character/character-generator.ts";
 import { CharacterIdentity } from "../../game/character/identity.ts";
+import { Clock } from "../../game/clock/index.ts";
 import { CharacterCard, type CharacterData } from "../game/character-card.tsx";
 import { Button } from "../primitive/button.tsx";
 import { rootRoute } from "./root.tsx";
-
-const CURRENT_DATE: GameDate = { year: 2025, month: 6, day: 15 };
 
 function getCharacterData(entityId: EntityId): CharacterData | null {
 	const identity = World.getComponent(entityId, CharacterIdentity);
@@ -23,7 +22,7 @@ function getCharacterData(entityId: EntityId): CharacterData | null {
 		culture: identity.culture,
 		age: GameCalendar.age({
 			birthDate: identity.birthDate,
-			currentDate: CURRENT_DATE,
+			currentDate: Clock.get(),
 		}),
 		birthDate: GameCalendar.format(identity.birthDate),
 		traits: World.getTags(entityId),
@@ -43,7 +42,6 @@ function IndexPage(): React.ReactElement {
 		const entityId = CharacterGenerator.fromArchetype({
 			archetype: "adult",
 			culture: "american",
-			currentDate: CURRENT_DATE,
 			traitsPerCategory: 3,
 		});
 

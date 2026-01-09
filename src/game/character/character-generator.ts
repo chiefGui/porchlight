@@ -4,20 +4,27 @@ import {
 } from "../../content/character/archetype.ts";
 import { CultureRegistry } from "../../content/character/culture.ts";
 import { type EntityId, Random, World } from "../../engine/index.ts";
-import type { GameDate } from "../calendar/index.ts";
+import { GameCalendar } from "../calendar/index.ts";
+import { Clock } from "../clock/index.ts";
+import { Employment } from "../employment/index.ts";
+import { Inventory } from "../inventory/index.ts";
+import { Stamina } from "../stamina/index.ts";
 import { CharacterIdentity, type Gender } from "./identity.ts";
 import {
 	type BirthdateStrategy,
 	DefaultBirthdateStrategy,
+	DefaultEmploymentStrategy,
+	DefaultMoneyStrategy,
 	DefaultNameStrategy,
 	DefaultTraitStrategy,
+	type EmploymentStrategy,
+	type MoneyStrategy,
 	type NameStrategy,
 	type TraitStrategy,
 } from "./strategy/index.ts";
 import { syncInferredTraitsForEntity } from "./trait-sync.ts";
 
 type BaseCharacterOptions = {
-	currentDate: GameDate;
 	gender?: Gender;
 	ageRange?: [number, number];
 	ageDistribution?: AgeDistribution;
@@ -29,6 +36,8 @@ type BaseCharacterOptions = {
 	nameStrategy?: NameStrategy;
 	birthdateStrategy?: BirthdateStrategy;
 	traitStrategy?: TraitStrategy;
+	moneyStrategy?: MoneyStrategy;
+	employmentStrategy?: EmploymentStrategy;
 };
 
 export type GenerateOptions = BaseCharacterOptions & {
@@ -55,10 +64,15 @@ export class CharacterGenerator {
 			throw new Error(`Unknown culture: ${options.culture}`);
 		}
 
+		const currentDate = Clock.get();
+
 		const nameStrategy = options.nameStrategy ?? DefaultNameStrategy;
 		const birthdateStrategy =
 			options.birthdateStrategy ?? DefaultBirthdateStrategy;
 		const traitStrategy = options.traitStrategy ?? DefaultTraitStrategy;
+		const moneyStrategy = options.moneyStrategy ?? DefaultMoneyStrategy;
+		const employmentStrategy =
+			options.employmentStrategy ?? DefaultEmploymentStrategy;
 
 		const gender = options.gender ?? (Random.bool() ? "male" : "female");
 		const [minAge, maxAge] = options.ageRange ?? [18, 65];
@@ -66,11 +80,13 @@ export class CharacterGenerator {
 		const name = nameStrategy.pick({ culture, gender });
 
 		const birthDate = birthdateStrategy.calculate({
-			currentDate: options.currentDate,
+			currentDate,
 			minAge,
 			maxAge,
 			distribution: options.ageDistribution,
 		});
+
+		const age = GameCalendar.age({ birthDate, currentDate });
 
 		const traits = traitStrategy.pick({
 			categories: options.traitCategories ?? ["personality"],
@@ -78,6 +94,9 @@ export class CharacterGenerator {
 			forced: options.forcedTraits,
 			excluded: options.excludedTraits,
 		});
+
+		const money = moneyStrategy.calculate({ culture, gender, age });
+		const jobId = employmentStrategy.calculate({ culture, gender, age });
 
 		const entity = World.createEntity();
 
@@ -87,6 +106,18 @@ export class CharacterGenerator {
 			gender,
 			culture: culture.id,
 			birthDate,
+		});
+
+		World.addComponent(entity, Inventory, {
+			items: { money },
+		});
+
+		World.addComponent(entity, Stamina, {
+			value: 1,
+		});
+
+		World.addComponent(entity, Employment, {
+			jobId,
 		});
 
 		for (const traitId of traits) {
@@ -101,7 +132,7 @@ export class CharacterGenerator {
 		}
 
 		// Sync inferred traits (e.g., life-stage based on birthdate)
-		syncInferredTraitsForEntity({ entity, currentDate: options.currentDate });
+		syncInferredTraitsForEntity({ entity, currentDate });
 
 		return entity;
 	}
@@ -119,7 +150,6 @@ export class CharacterGenerator {
 
 		return CharacterGenerator.generate({
 			culture,
-			currentDate: options.currentDate,
 			gender: options.gender ?? archetype.gender,
 			ageRange: options.ageRange ?? archetype.ageRange,
 			ageDistribution: options.ageDistribution ?? archetype.ageDistribution,
@@ -132,6 +162,8 @@ export class CharacterGenerator {
 			nameStrategy: options.nameStrategy,
 			birthdateStrategy: options.birthdateStrategy,
 			traitStrategy: options.traitStrategy,
+			moneyStrategy: options.moneyStrategy,
+			employmentStrategy: options.employmentStrategy,
 		});
 	}
 

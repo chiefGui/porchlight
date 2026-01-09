@@ -15,3 +15,15 @@ export {
 	type TraitPickOptions,
 	type TraitStrategy,
 } from "./trait-strategy.ts";
+
+export {
+	DefaultMoneyStrategy,
+	type MoneyCalculateOptions,
+	type MoneyStrategy,
+} from "./money-strategy.ts";
+
+export {
+	DefaultEmploymentStrategy,
+	type EmploymentCalculateOptions,
+	type EmploymentStrategy,
+} from "./employment-strategy.ts";

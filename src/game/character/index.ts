@@ -6,13 +6,20 @@ export {
 	type GenerateOptions,
 } from "./character-generator.ts";
 export { CharacterIdentity, type Gender } from "./identity.ts";
+export { CharacterUtil } from "./character.util.ts";
 
 export {
 	type BirthdateCalculateOptions,
 	type BirthdateStrategy,
 	DefaultBirthdateStrategy,
+	DefaultEmploymentStrategy,
+	DefaultMoneyStrategy,
 	DefaultNameStrategy,
 	DefaultTraitStrategy,
+	type EmploymentCalculateOptions,
+	type EmploymentStrategy,
+	type MoneyCalculateOptions,
+	type MoneyStrategy,
 	type NamePickOptions,
 	type NameResult,
 	type NameStrategy,
