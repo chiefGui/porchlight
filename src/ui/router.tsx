@@ -3,6 +3,7 @@ import { chatThreadRoute } from "./route/chat-thread.tsx";
 import { chatRoute } from "./route/chat.tsx";
 import { gameRoute } from "./route/game.tsx";
 import { indexRoute } from "./route/index.tsx";
+import { profileRoute } from "./route/profile.tsx";
 import { rootRoute } from "./route/root.tsx";
 
 const hashHistory = createHashHistory();
@@ -12,6 +13,7 @@ const routeTree = rootRoute.addChildren([
 	gameRoute,
 	chatRoute,
 	chatThreadRoute,
+	profileRoute,
 ]);
 
 export const router = createRouter({

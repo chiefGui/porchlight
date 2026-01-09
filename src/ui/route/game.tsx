@@ -3,9 +3,11 @@ import { useState } from "react";
 import { ActivityUtil } from "../../game/activity/index.ts";
 import { ChatUtil } from "../../game/chat/index.ts";
 import { Player } from "../../game/player/index.ts";
-import { Footer, FooterButton } from "../layout/footer.tsx";
 import { ActivityCard } from "../game/activity-card.tsx";
 import { CharacterDrawer } from "../game/character-drawer.tsx";
+import { Footer, FooterButton } from "../layout/footer.tsx";
+import { Header } from "../layout/header.tsx";
+import { Page } from "../layout/page.tsx";
 import { rootRoute } from "./root.tsx";
 
 export const gameRoute = createRoute({
@@ -36,7 +38,25 @@ function GamePage(): React.ReactElement {
 
 	return (
 		<>
-			<main className="pb-16">
+			<Page
+				header={<Header />}
+				footer={
+					<Footer>
+						<FooterButton
+							icon={<ChatIcon />}
+							label="Chat"
+							onClick={() => navigate({ to: "/chat" })}
+							badge={ChatUtil.getUnreadCount(playerId)}
+						/>
+						<FooterButton
+							icon={<UserIcon />}
+							label="Me"
+							active={characterDrawerOpen}
+							onClick={() => setCharacterDrawerOpen(true)}
+						/>
+					</Footer>
+				}
+			>
 				<div className="p-4 space-y-6">
 					<section className="space-y-3">
 						<h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
@@ -58,22 +78,7 @@ function GamePage(): React.ReactElement {
 						</div>
 					</section>
 				</div>
-			</main>
-
-			<Footer>
-				<FooterButton
-					icon={<ChatIcon />}
-					label="Chat"
-					onClick={() => navigate({ to: "/chat" })}
-					badge={ChatUtil.getUnreadCount(playerId)}
-				/>
-				<FooterButton
-					icon={<UserIcon />}
-					label="Me"
-					active={characterDrawerOpen}
-					onClick={() => setCharacterDrawerOpen(true)}
-				/>
-			</Footer>
+			</Page>
 
 			<CharacterDrawer
 				characterId={playerId}

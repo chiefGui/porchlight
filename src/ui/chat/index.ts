@@ -1,2 +1,3 @@
-export { ContactList } from "./contact-list.tsx";
-export { MessageThread } from "./message-thread.tsx";
+export * from "./contact-list.tsx";
+export * from "./message-input.tsx";
+export * from "./message-thread.tsx";
