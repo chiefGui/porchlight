@@ -1,4 +1,5 @@
 import { createRoute, redirect, useNavigate } from "@tanstack/react-router";
+import { Mars, Venus } from "lucide-react";
 import { Component, Tag, type EntityId } from "../../engine/index.ts";
 import { TraitRegistry } from "../../content/character/trait.ts";
 import { CharacterIdentity } from "../../game/character/index.ts";
@@ -12,11 +13,6 @@ import { rootRoute } from "./root.tsx";
 const CULTURE_FLAGS: Record<string, string> = {
 	american: "🇺🇸",
 	canadian: "🇨🇦",
-};
-
-const GENDER_ICONS: Record<string, string> = {
-	male: "♂",
-	female: "♀",
 };
 
 export const profileRoute = createRoute({
@@ -53,8 +49,8 @@ function ProfilePage(): React.ReactElement {
 		? `${identity.firstName} ${identity.lastName}`
 		: "Unknown";
 
-	const genderIcon = identity ? GENDER_ICONS[identity.gender] : null;
 	const cultureFlag = identity ? CULTURE_FLAGS[identity.culture] : null;
+	const GenderIcon = identity?.gender === "male" ? Mars : Venus;
 
 	const getOpinionColor = (value: number): string => {
 		if (value >= 50) return "text-emerald-400";
@@ -94,13 +90,11 @@ function ProfilePage(): React.ReactElement {
 
 					{relationship && (
 						<p className="text-sm text-muted-foreground capitalize mt-1 flex items-center gap-1">
-							{genderIcon && (
-								<span className={cn(
-									"text-xs leading-none translate-y-px",
-									identity?.gender === "male" ? "text-blue-400" : "text-pink-400"
-								)}>
-									{genderIcon}
-								</span>
+							{identity && (
+								<GenderIcon
+									size={14}
+									className={identity.gender === "male" ? "text-blue-400" : "text-pink-400"}
+								/>
 							)}
 							{relationship.typeId.replace(/_/g, " ")}
 						</p>
