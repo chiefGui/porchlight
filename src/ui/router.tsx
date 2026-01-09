@@ -24,10 +24,10 @@ export const router = createRouter({
 		</div>
 	),
 	defaultErrorComponent: ({ error }) => (
-		<div className="min-h-screen flex items-center justify-center p-8">
-			<div className="text-center space-y-4">
+		<div className="min-h-screen flex items-center justify-center p-4">
+			<div className="text-center space-y-4 w-full max-w-lg">
 				<h1 className="text-2xl font-bold text-destructive">Route Error</h1>
-				<pre className="text-sm bg-muted p-4 rounded overflow-auto max-w-lg">
+				<pre className="text-sm bg-muted p-4 rounded overflow-auto text-left break-words whitespace-pre-wrap">
 					{error instanceof Error ? error.message : String(error)}
 				</pre>
 			</div>
