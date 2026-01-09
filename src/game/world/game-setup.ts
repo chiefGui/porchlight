@@ -1,4 +1,3 @@
-import type { EntityId } from "../../engine/index.ts";
 import { setupInitialContent } from "../../content/pack/base/index.ts";
 
 /**
@@ -10,7 +9,7 @@ export class GameSetup {
 	 * Initialize a new game.
 	 * The actual content is defined in the content pack.
 	 */
-	static initialize(playerId: EntityId): void {
-		setupInitialContent(playerId);
+	static initialize(): void {
+		setupInitialContent();
 	}
 }

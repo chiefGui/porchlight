@@ -28,8 +28,8 @@ function IndexPage(): React.ReactElement {
 		});
 		Player.set(entityId);
 
-		// Initialize the game with the inheritance storyline
-		GameSetup.initialize(entityId);
+		// Initialize the game world
+		GameSetup.initialize();
 
 		setCharacterId(entityId);
 	};
