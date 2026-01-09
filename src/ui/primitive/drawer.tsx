@@ -242,31 +242,31 @@ export const DrawerContent = forwardRef<HTMLDivElement, DrawerContentProps>(
 		return (
 			<AnimatePresence>
 				{isOpen && (
-					<Dialog
-						ref={ref}
-						store={store}
-						modal={false}
-						backdrop={false}
-						preventBodyScroll
-						portal
-						{...props}
-						render={
-							<motion.div
-								ref={contentRef}
-								initial={animation.initial}
-								animate={animation.animate}
-								exit={animation.exit}
-								transition={{
-									type: "spring",
-									damping: 30,
-									stiffness: 300,
-								}}
-							/>
-						}
+					<motion.div
+						key="drawer-content"
+						ref={contentRef}
+						initial={animation.initial}
+						animate={animation.animate}
+						exit={animation.exit}
+						transition={{
+							type: "spring",
+							damping: 30,
+							stiffness: 300,
+						}}
 						className={cn(drawerContentVariants({ side }), className)}
 					>
-						{children}
-					</Dialog>
+						<Dialog
+							ref={ref}
+							store={store}
+							modal={false}
+							backdrop={false}
+							preventBodyScroll={false}
+							render={<div className="flex flex-col h-full" />}
+							{...props}
+						>
+							{children}
+						</Dialog>
+					</motion.div>
 				)}
 			</AnimatePresence>
 		);
