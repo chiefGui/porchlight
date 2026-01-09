@@ -15,8 +15,7 @@ import {
 	type TraitStrategy,
 } from "./strategy/index.ts";
 
-export type GenerateOptions = {
-	culture: string;
+type BaseCharacterOptions = {
 	currentDate: GameDate;
 	gender?: Gender;
 	ageRange?: [number, number];
@@ -31,21 +30,13 @@ export type GenerateOptions = {
 	traitStrategy?: TraitStrategy;
 };
 
-export type FromArchetypeOptions = {
+export type GenerateOptions = BaseCharacterOptions & {
+	culture: string;
+};
+
+export type FromArchetypeOptions = BaseCharacterOptions & {
 	archetype: string;
-	currentDate: GameDate;
 	culture?: string;
-	gender?: Gender;
-	ageRange?: [number, number];
-	ageDistribution?: AgeDistribution;
-	traitCategories?: string[];
-	traitsPerCategory?: number;
-	forcedTraits?: string[];
-	excludedTraits?: string[];
-	extraTags?: string[];
-	nameStrategy?: NameStrategy;
-	birthdateStrategy?: BirthdateStrategy;
-	traitStrategy?: TraitStrategy;
 };
 
 export type BatchOptions = GenerateOptions & {
