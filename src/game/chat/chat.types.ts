@@ -16,6 +16,8 @@ export type Message = {
 	content: string;
 	/** Game tick when the message was sent */
 	timestamp: number;
+	/** Real-world timestamp (Date.now()) for display */
+	sentAt: number;
 	/** Whether the message has been read */
 	read: boolean;
 	/** Optional: message type for special styling */

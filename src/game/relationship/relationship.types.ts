@@ -94,6 +94,19 @@ export type TraitInteraction = {
 };
 
 // -----------------------------------------------------------------------------
+// Opinion Sources
+// -----------------------------------------------------------------------------
+
+/**
+ * A single source contributing to an opinion value.
+ */
+export type OpinionSource = {
+	label: string;
+	value: number;
+	type: "positive" | "negative";
+};
+
+// -----------------------------------------------------------------------------
 // Relationship State
 // -----------------------------------------------------------------------------
 
