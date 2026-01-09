@@ -6,6 +6,7 @@ const routeTree = rootRoute.addChildren([indexRoute]);
 
 export const router = createRouter({
 	routeTree,
+	basepath: "/porchlight",
 	defaultNotFoundComponent: () => (
 		<div className="min-h-screen flex items-center justify-center p-8">
 			<div className="text-center space-y-4">
