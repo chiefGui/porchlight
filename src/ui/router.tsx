@@ -1,8 +1,9 @@
 import { createRouter } from "@tanstack/react-router";
+import { gameRoute } from "./route/game.tsx";
 import { indexRoute } from "./route/index.tsx";
 import { rootRoute } from "./route/root.tsx";
 
-const routeTree = rootRoute.addChildren([indexRoute]);
+const routeTree = rootRoute.addChildren([indexRoute, gameRoute]);
 
 export const router = createRouter({
 	routeTree,

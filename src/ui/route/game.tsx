@@ -1,33 +1,44 @@
+import { createRoute, redirect } from "@tanstack/react-router";
 import { useState } from "react";
-import type { EntityId } from "../../engine/index.ts";
 import { ActivityUtil } from "../../game/activity/index.ts";
 import { ChatUtil } from "../../game/chat/index.ts";
+import { Player } from "../../game/player/index.ts";
 import { ChatDrawer } from "../chat/index.ts";
 import { Footer, FooterButton } from "../layout/footer.tsx";
-import { ActivityCard } from "./activity-card.tsx";
-import { CharacterDrawer } from "./character-drawer.tsx";
+import { ActivityCard } from "../game/activity-card.tsx";
+import { CharacterDrawer } from "../game/character-drawer.tsx";
+import { rootRoute } from "./root.tsx";
 
-type GameViewProps = {
-	characterId: EntityId;
-};
+export const gameRoute = createRoute({
+	getParentRoute: () => rootRoute,
+	path: "/game",
+	beforeLoad: () => {
+		const playerId = Player.getCharacterId();
+		if (!playerId) {
+			throw redirect({ to: "/" });
+		}
+		return { playerId };
+	},
+	component: GamePage,
+});
 
-export function GameView({ characterId }: GameViewProps): React.ReactElement {
+function GamePage(): React.ReactElement {
+	const { playerId } = gameRoute.useRouteContext();
 	const [characterDrawerOpen, setCharacterDrawerOpen] = useState(false);
 	const [chatDrawerOpen, setChatDrawerOpen] = useState(false);
 	const [, forceUpdate] = useState(0);
 
 	const handleActivity = (activityId: string) => {
-		ActivityUtil.perform(characterId, activityId);
+		ActivityUtil.perform(playerId, activityId);
 		forceUpdate((n) => n + 1);
 	};
 
-	const availableActivities = ActivityUtil.getAvailable(characterId);
+	const availableActivities = ActivityUtil.getAvailable(playerId);
 
 	return (
 		<>
 			<main className="pb-16">
 				<div className="p-4 space-y-6">
-					{/* Activity selection */}
 					<section className="space-y-3">
 						<h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
 							What would you like to do?
@@ -56,7 +67,7 @@ export function GameView({ characterId }: GameViewProps): React.ReactElement {
 					label="Chat"
 					active={chatDrawerOpen}
 					onClick={() => setChatDrawerOpen(true)}
-					badge={ChatUtil.getUnreadCount(characterId)}
+					badge={ChatUtil.getUnreadCount(playerId)}
 				/>
 				<FooterButton
 					icon={<UserIcon />}
@@ -67,13 +78,13 @@ export function GameView({ characterId }: GameViewProps): React.ReactElement {
 			</Footer>
 
 			<ChatDrawer
-				playerId={characterId}
+				playerId={playerId}
 				open={chatDrawerOpen}
 				onOpenChange={setChatDrawerOpen}
 			/>
 
 			<CharacterDrawer
-				characterId={characterId}
+				characterId={playerId}
 				open={characterDrawerOpen}
 				onOpenChange={setCharacterDrawerOpen}
 			/>
