@@ -1,17 +1,17 @@
-import { World, Random, type EntityId } from "../../engine/index.ts";
-import { CultureRegistry } from "../../content/character/culture.ts";
 import {
-	CharacterArchetypeRegistry,
 	type AgeDistribution,
+	CharacterArchetypeRegistry,
 } from "../../content/character/archetype.ts";
+import { CultureRegistry } from "../../content/character/culture.ts";
+import { type EntityId, Random, World } from "../../engine/index.ts";
 import type { GameDate } from "../calendar/index.ts";
 import { CharacterIdentity, type Gender } from "./identity.ts";
 import {
-	DefaultNameStrategy,
+	type BirthdateStrategy,
 	DefaultBirthdateStrategy,
+	DefaultNameStrategy,
 	DefaultTraitStrategy,
 	type NameStrategy,
-	type BirthdateStrategy,
 	type TraitStrategy,
 } from "./strategy/index.ts";
 
@@ -55,7 +55,8 @@ export class CharacterGenerator {
 		}
 
 		const nameStrategy = options.nameStrategy ?? DefaultNameStrategy;
-		const birthdateStrategy = options.birthdateStrategy ?? DefaultBirthdateStrategy;
+		const birthdateStrategy =
+			options.birthdateStrategy ?? DefaultBirthdateStrategy;
 		const traitStrategy = options.traitStrategy ?? DefaultTraitStrategy;
 
 		const gender = options.gender ?? (Random.bool() ? "male" : "female");
@@ -109,14 +110,15 @@ export class CharacterGenerator {
 			throw new Error(`Culture required for archetype: ${options.archetype}`);
 		}
 
-		return this.generate({
+		return CharacterGenerator.generate({
 			culture,
 			currentDate: options.currentDate,
 			gender: options.gender ?? archetype.gender,
 			ageRange: options.ageRange ?? archetype.ageRange,
 			ageDistribution: options.ageDistribution ?? archetype.ageDistribution,
 			traitCategories: options.traitCategories ?? archetype.traitCategories,
-			traitsPerCategory: options.traitsPerCategory ?? archetype.traitsPerCategory,
+			traitsPerCategory:
+				options.traitsPerCategory ?? archetype.traitsPerCategory,
 			forcedTraits: options.forcedTraits ?? archetype.forcedTraits,
 			excludedTraits: options.excludedTraits ?? archetype.excludedTraits,
 			extraTags: [...(archetype.tags ?? []), ...(options.extraTags ?? [])],
@@ -128,11 +130,15 @@ export class CharacterGenerator {
 
 	static batch(options: BatchOptions): EntityId[] {
 		const { count, ...generateOptions } = options;
-		return Array.from({ length: count }, () => this.generate(generateOptions));
+		return Array.from({ length: count }, () =>
+			CharacterGenerator.generate(generateOptions),
+		);
 	}
 
 	static batchFromArchetype(options: BatchFromArchetypeOptions): EntityId[] {
 		const { count, ...archetypeOptions } = options;
-		return Array.from({ length: count }, () => this.fromArchetype(archetypeOptions));
+		return Array.from({ length: count }, () =>
+			CharacterGenerator.fromArchetype(archetypeOptions),
+		);
 	}
 }

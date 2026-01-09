@@ -1,5 +1,5 @@
+import { type Trait, TraitRegistry } from "../../../content/character/trait.ts";
 import { Random } from "../../../engine/index.ts";
-import { TraitRegistry, type Trait } from "../../../content/character/trait.ts";
 
 export type TraitPickOptions = {
 	categories: string[];
@@ -14,7 +14,12 @@ export type TraitStrategy = {
 
 export class DefaultTraitStrategy {
 	static pick(options: TraitPickOptions): string[] {
-		const { categories, countPerCategory = 1, forced = [], excluded = [] } = options;
+		const {
+			categories,
+			countPerCategory = 1,
+			forced = [],
+			excluded = [],
+		} = options;
 
 		const result: string[] = [...forced];
 		const excludedSet = new Set<string>(excluded);
@@ -29,7 +34,7 @@ export class DefaultTraitStrategy {
 		}
 
 		for (const category of categories) {
-			const picked = this.pickFromCategory({
+			const picked = DefaultTraitStrategy.pickFromCategory({
 				category,
 				count: countPerCategory,
 				excluded: excludedSet,
@@ -53,7 +58,8 @@ export class DefaultTraitStrategy {
 		const { category, count, excluded } = options;
 
 		const available = TraitRegistry.getByCategory(category).filter(
-			(t) => !excluded.has(t.id) && !t.exclusive?.some((ex) => excluded.has(ex)),
+			(t) =>
+				!excluded.has(t.id) && !t.exclusive?.some((ex) => excluded.has(ex)),
 		);
 
 		if (available.length === 0) {
@@ -64,7 +70,7 @@ export class DefaultTraitStrategy {
 		const pool = [...available];
 
 		for (let i = 0; i < count && pool.length > 0; i++) {
-			const picked = this.pickWeighted(pool);
+			const picked = DefaultTraitStrategy.pickWeighted(pool);
 			if (!picked) break;
 
 			result.push(picked);

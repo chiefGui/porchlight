@@ -11,44 +11,44 @@ export class TraitRegistry {
 	private static byCategory = new Map<string, Trait[]>();
 
 	static register(trait: Trait): void {
-		this.byId.set(trait.id, trait);
+		TraitRegistry.byId.set(trait.id, trait);
 
-		const category = this.byCategory.get(trait.category) ?? [];
+		const category = TraitRegistry.byCategory.get(trait.category) ?? [];
 		category.push(trait);
-		this.byCategory.set(trait.category, category);
+		TraitRegistry.byCategory.set(trait.category, category);
 	}
 
 	static get(id: string): Trait | undefined {
-		return this.byId.get(id);
+		return TraitRegistry.byId.get(id);
 	}
 
 	static has(id: string): boolean {
-		return this.byId.has(id);
+		return TraitRegistry.byId.has(id);
 	}
 
 	static getByCategory(category: string): Trait[] {
-		return this.byCategory.get(category) ?? [];
+		return TraitRegistry.byCategory.get(category) ?? [];
 	}
 
 	static categories(): IterableIterator<string> {
-		return this.byCategory.keys();
+		return TraitRegistry.byCategory.keys();
 	}
 
 	static all(): IterableIterator<Trait> {
-		return this.byId.values();
+		return TraitRegistry.byId.values();
 	}
 
 	static ids(): IterableIterator<string> {
-		return this.byId.keys();
+		return TraitRegistry.byId.keys();
 	}
 
 	static count(): number {
-		return this.byId.size;
+		return TraitRegistry.byId.size;
 	}
 
 	static reset(): void {
-		this.byId.clear();
-		this.byCategory.clear();
+		TraitRegistry.byId.clear();
+		TraitRegistry.byCategory.clear();
 	}
 }
 

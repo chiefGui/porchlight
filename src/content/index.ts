@@ -1,13 +1,13 @@
 export {
+	type AgeDistribution,
+	type CharacterArchetype,
 	CharacterArchetypeRegistry,
+	type Culture,
 	CultureRegistry,
-	TraitRegistry,
 	defineCharacterArchetype,
 	defineCulture,
 	defineTrait,
-	type AgeDistribution,
-	type CharacterArchetype,
-	type Culture,
 	type NameEntry,
 	type Trait,
+	TraitRegistry,
 } from "./character/index.ts";

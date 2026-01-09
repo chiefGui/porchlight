@@ -1,19 +1,17 @@
 export {
-	CultureRegistry,
-	defineCulture,
-	type Culture,
-	type NameEntry,
-} from "./culture.ts";
-
-export {
-	TraitRegistry,
-	defineTrait,
-	type Trait,
-} from "./trait.ts";
-
-export {
-	CharacterArchetypeRegistry,
-	defineCharacterArchetype,
 	type AgeDistribution,
 	type CharacterArchetype,
+	CharacterArchetypeRegistry,
+	defineCharacterArchetype,
 } from "./archetype.ts";
+export {
+	type Culture,
+	CultureRegistry,
+	defineCulture,
+	type NameEntry,
+} from "./culture.ts";
+export {
+	defineTrait,
+	type Trait,
+	TraitRegistry,
+} from "./trait.ts";

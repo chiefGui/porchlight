@@ -13,31 +13,31 @@ export class CultureRegistry {
 	private static byId = new Map<string, Culture>();
 
 	static register(culture: Culture): void {
-		this.byId.set(culture.id, culture);
+		CultureRegistry.byId.set(culture.id, culture);
 	}
 
 	static get(id: string): Culture | undefined {
-		return this.byId.get(id);
+		return CultureRegistry.byId.get(id);
 	}
 
 	static has(id: string): boolean {
-		return this.byId.has(id);
+		return CultureRegistry.byId.has(id);
 	}
 
 	static all(): IterableIterator<Culture> {
-		return this.byId.values();
+		return CultureRegistry.byId.values();
 	}
 
 	static ids(): IterableIterator<string> {
-		return this.byId.keys();
+		return CultureRegistry.byId.keys();
 	}
 
 	static count(): number {
-		return this.byId.size;
+		return CultureRegistry.byId.size;
 	}
 
 	static reset(): void {
-		this.byId.clear();
+		CultureRegistry.byId.clear();
 	}
 }
 

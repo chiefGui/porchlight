@@ -1,15 +1,15 @@
 export { GameCalendar, type GameDate } from "./calendar/index.ts";
 
 export {
+	type BatchFromArchetypeOptions,
+	type BatchOptions,
+	type BirthdateCalculateOptions,
+	type BirthdateStrategy,
 	CharacterGenerator,
 	CharacterIdentity,
 	DefaultBirthdateStrategy,
 	DefaultNameStrategy,
 	DefaultTraitStrategy,
-	type BatchFromArchetypeOptions,
-	type BatchOptions,
-	type BirthdateCalculateOptions,
-	type BirthdateStrategy,
 	type FromArchetypeOptions,
 	type Gender,
 	type GenerateOptions,

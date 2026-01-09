@@ -21,9 +21,7 @@ class Health {
 
 @system({ phase: "combat" })
 class DamageSystem {
-	constructor(
-		@query(Health) private readonly targets: Query<[Health]>,
-	) {}
+	constructor(@query(Health) private readonly targets: Query<[Health]>) {}
 
 	tick(): void {
 		for (const [entityId, health] of this.targets) {
@@ -36,9 +34,7 @@ class DamageSystem {
 
 @system({ phase: "movement" })
 class MovementSystem {
-	constructor(
-		@query(Position) private readonly movers: Query<[Position]>,
-	) {}
+	constructor(@query(Position) private readonly movers: Query<[Position]>) {}
 
 	tick(): void {
 		for (const [entityId, position] of this.movers) {
