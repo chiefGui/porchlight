@@ -5,7 +5,9 @@ export type GameDate = {
 };
 
 export class GameCalendar {
-	private static readonly daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+	private static readonly daysInMonth = [
+		31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31,
+	];
 
 	static age(options: { birthDate: GameDate; currentDate: GameDate }): number {
 		const { birthDate, currentDate } = options;
@@ -13,7 +15,8 @@ export class GameCalendar {
 
 		const birthdayNotYet =
 			currentDate.month < birthDate.month ||
-			(currentDate.month === birthDate.month && currentDate.day < birthDate.day);
+			(currentDate.month === birthDate.month &&
+				currentDate.day < birthDate.day);
 
 		if (birthdayNotYet) {
 			age--;
@@ -22,13 +25,18 @@ export class GameCalendar {
 		return Math.max(0, age);
 	}
 
-	static isBirthday(options: { birthDate: GameDate; currentDate: GameDate }): boolean {
+	static isBirthday(options: {
+		birthDate: GameDate;
+		currentDate: GameDate;
+	}): boolean {
 		const { birthDate, currentDate } = options;
-		return birthDate.month === currentDate.month && birthDate.day === currentDate.day;
+		return (
+			birthDate.month === currentDate.month && birthDate.day === currentDate.day
+		);
 	}
 
 	static daysInMonthOf(month: number): number {
-		return this.daysInMonth[month - 1] ?? 30;
+		return GameCalendar.daysInMonth[month - 1] ?? 30;
 	}
 
 	static format(date: GameDate): string {
@@ -44,14 +52,14 @@ export class GameCalendar {
 	}
 
 	static isAfter(a: GameDate, b: GameDate): boolean {
-		return this.compare(a, b) > 0;
+		return GameCalendar.compare(a, b) > 0;
 	}
 
 	static isBefore(a: GameDate, b: GameDate): boolean {
-		return this.compare(a, b) < 0;
+		return GameCalendar.compare(a, b) < 0;
 	}
 
 	static isEqual(a: GameDate, b: GameDate): boolean {
-		return this.compare(a, b) === 0;
+		return GameCalendar.compare(a, b) === 0;
 	}
 }

@@ -20,35 +20,37 @@ export class CharacterArchetypeRegistry {
 	private static byId = new Map<string, CharacterArchetype>();
 
 	static register(archetype: CharacterArchetype): void {
-		this.byId.set(archetype.id, archetype);
+		CharacterArchetypeRegistry.byId.set(archetype.id, archetype);
 	}
 
 	static get(id: string): CharacterArchetype | undefined {
-		return this.byId.get(id);
+		return CharacterArchetypeRegistry.byId.get(id);
 	}
 
 	static has(id: string): boolean {
-		return this.byId.has(id);
+		return CharacterArchetypeRegistry.byId.has(id);
 	}
 
 	static all(): IterableIterator<CharacterArchetype> {
-		return this.byId.values();
+		return CharacterArchetypeRegistry.byId.values();
 	}
 
 	static ids(): IterableIterator<string> {
-		return this.byId.keys();
+		return CharacterArchetypeRegistry.byId.keys();
 	}
 
 	static count(): number {
-		return this.byId.size;
+		return CharacterArchetypeRegistry.byId.size;
 	}
 
 	static reset(): void {
-		this.byId.clear();
+		CharacterArchetypeRegistry.byId.clear();
 	}
 }
 
-export function defineCharacterArchetype(archetype: CharacterArchetype): CharacterArchetype {
+export function defineCharacterArchetype(
+	archetype: CharacterArchetype,
+): CharacterArchetype {
 	CharacterArchetypeRegistry.register(archetype);
 	return archetype;
 }

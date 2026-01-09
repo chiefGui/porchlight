@@ -1,19 +1,18 @@
-export { CharacterIdentity, type Gender } from "./identity.ts";
-
 export {
-	CharacterGenerator,
 	type BatchFromArchetypeOptions,
 	type BatchOptions,
+	CharacterGenerator,
 	type FromArchetypeOptions,
 	type GenerateOptions,
 } from "./character-generator.ts";
+export { CharacterIdentity, type Gender } from "./identity.ts";
 
 export {
+	type BirthdateCalculateOptions,
+	type BirthdateStrategy,
 	DefaultBirthdateStrategy,
 	DefaultNameStrategy,
 	DefaultTraitStrategy,
-	type BirthdateCalculateOptions,
-	type BirthdateStrategy,
 	type NamePickOptions,
 	type NameResult,
 	type NameStrategy,

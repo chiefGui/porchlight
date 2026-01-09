@@ -1,5 +1,5 @@
-import { Random } from "../../../engine/index.ts";
 import type { Culture, NameEntry } from "../../../content/character/culture.ts";
+import { Random } from "../../../engine/index.ts";
 import type { Gender } from "../identity.ts";
 
 export type NameResult = {
@@ -22,8 +22,8 @@ export class DefaultNameStrategy {
 		const firstNames = gender === "male" ? culture.male : culture.female;
 
 		return {
-			first: this.pickWeighted(firstNames),
-			last: this.pickWeighted(culture.surname),
+			first: DefaultNameStrategy.pickWeighted(firstNames),
+			last: DefaultNameStrategy.pickWeighted(culture.surname),
 		};
 	}
 

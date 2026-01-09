@@ -1,5 +1,5 @@
-import { Random } from "../../../engine/index.ts";
 import type { AgeDistribution } from "../../../content/character/archetype.ts";
+import { Random } from "../../../engine/index.ts";
 import { GameCalendar, type GameDate } from "../../calendar/index.ts";
 
 export type BirthdateCalculateOptions = {
@@ -17,7 +17,7 @@ export class DefaultBirthdateStrategy {
 	static calculate(options: BirthdateCalculateOptions): GameDate {
 		const { currentDate, minAge, maxAge, distribution = "uniform" } = options;
 
-		const t = this.sample(distribution);
+		const t = DefaultBirthdateStrategy.sample(distribution);
 		const age = Math.floor(minAge + (maxAge - minAge) * t);
 
 		const year = currentDate.year - age;
