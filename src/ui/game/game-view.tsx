@@ -1,8 +1,6 @@
 import { useState } from "react";
 import type { EntityId } from "../../engine/index.ts";
 import { ActivityUtil } from "../../game/activity/index.ts";
-import { GameCalendar } from "../../game/calendar/index.ts";
-import { Clock } from "../../game/clock/index.ts";
 import { Footer, FooterButton } from "../layout/footer.tsx";
 import { ActivityCard } from "./activity-card.tsx";
 import { CharacterDrawer } from "./character-drawer.tsx";
@@ -20,22 +18,12 @@ export function GameView({ characterId }: GameViewProps): React.ReactElement {
 		forceUpdate((n) => n + 1);
 	};
 
-	const currentDate = Clock.get();
-	const period = Clock.period();
 	const availableActivities = ActivityUtil.getAvailable(characterId);
 
 	return (
 		<>
-			<main className="min-h-screen pb-16">
+			<main className="pb-16">
 				<div className="p-4 space-y-6">
-					{/* Time display */}
-					<header className="text-center space-y-1">
-						<p className="text-sm text-muted-foreground">
-							{GameCalendar.format(currentDate)}
-						</p>
-						<h1 className="text-2xl font-bold capitalize">{period}</h1>
-					</header>
-
 					{/* Activity selection */}
 					<section className="space-y-3">
 						<h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
