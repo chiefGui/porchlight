@@ -1,11 +1,14 @@
-import { createRouter } from "@tanstack/react-router";
+import { createRouter, createHashHistory } from "@tanstack/react-router";
 import { indexRoute } from "./route/index.tsx";
 import { rootRoute } from "./route/root.tsx";
+
+const hashHistory = createHashHistory();
 
 const routeTree = rootRoute.addChildren([indexRoute]);
 
 export const router = createRouter({
 	routeTree,
+	history: hashHistory,
 	basepath: "/porchlight",
 	defaultNotFoundComponent: () => (
 		<div className="min-h-screen flex items-center justify-center p-8">
