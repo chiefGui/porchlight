@@ -93,9 +93,12 @@ function ProfilePage(): React.ReactElement {
 					<h2 className="mt-4 text-2xl font-bold">{displayName}</h2>
 
 					{relationship && (
-						<p className="text-sm text-muted-foreground capitalize mt-1 flex items-center gap-1.5">
+						<p className="text-sm text-muted-foreground capitalize mt-1 flex items-center gap-1">
 							{genderIcon && (
-								<span className={identity?.gender === "male" ? "text-blue-400" : "text-pink-400"}>
+								<span className={cn(
+									"text-xs leading-none translate-y-px",
+									identity?.gender === "male" ? "text-blue-400" : "text-pink-400"
+								)}>
 									{genderIcon}
 								</span>
 							)}
