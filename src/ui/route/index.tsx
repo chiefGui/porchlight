@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { EntityId } from "../../engine/index.ts";
 import { CharacterGenerator } from "../../game/character/character-generator.ts";
 import { Player } from "../../game/player/index.ts";
+import { WorldGenerator } from "../../game/world/index.ts";
 import { GameView } from "../game/game-view.tsx";
 import { Button } from "../primitive/button.tsx";
 import { rootRoute } from "./root.tsx";
@@ -19,12 +20,22 @@ function IndexPage(): React.ReactElement {
 	);
 
 	const handleNewGame = () => {
+		// Create the player character
 		const entityId = CharacterGenerator.fromArchetype({
 			archetype: "adult",
 			culture: "american",
 			traitsPerCategory: 3,
 		});
 		Player.set(entityId);
+
+		// Generate NPCs with relationships
+		WorldGenerator.generate({
+			playerId: entityId,
+			friendCount: 3,
+			familyCount: 2,
+			acquaintanceCount: 2,
+		});
+
 		setCharacterId(entityId);
 	};
 

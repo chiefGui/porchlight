@@ -6,3 +6,6 @@ export * from "./stamina/index.ts";
 export * from "./employment/index.ts";
 export * from "./activity/index.ts";
 export * from "./player/index.ts";
+export * from "./relationship/index.ts";
+export * from "./chat/index.ts";
+export * from "./world/index.ts";

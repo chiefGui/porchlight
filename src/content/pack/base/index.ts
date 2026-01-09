@@ -16,3 +16,6 @@ import "./job/index.ts";
 
 // Activities
 import "./activity/index.ts";
+
+// Relationships
+import "./relationship/index.ts";
