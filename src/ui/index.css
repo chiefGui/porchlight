@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-	/* Colors */
+	/* Colors - Base (Sky theme as default) */
 	--color-background: oklch(0.145 0 0);
 	--color-foreground: oklch(0.985 0 0);
 
@@ -46,4 +46,18 @@ body {
 	background-color: var(--color-background);
 	color: var(--color-foreground);
 	font-family: var(--font-sans);
+}
+
+/* Theme: Emerald */
+.theme-emerald {
+	--color-primary: oklch(0.8 0.15 160);
+	--color-primary-foreground: oklch(0.15 0.03 160);
+	--color-ring: oklch(0.6 0.18 160);
+}
+
+/* Theme: Rose */
+.theme-rose {
+	--color-primary: oklch(0.8 0.15 350);
+	--color-primary-foreground: oklch(0.15 0.03 350);
+	--color-ring: oklch(0.6 0.18 350);
 }
