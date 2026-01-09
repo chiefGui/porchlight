@@ -5,7 +5,7 @@ import { CharacterIdentity } from "../character/identity.ts";
 import { Relationships } from "../relationship/relationship.component.ts";
 import { RelationshipUtil } from "../relationship/relationship.util.ts";
 import { ChatThreads } from "./chat.component.ts";
-import type { Contact, Message } from "./chat.types.ts";
+import type { ChatThread, Contact, Message } from "./chat.types.ts";
 
 /**
  * Utility class for managing the chat system.
@@ -296,5 +296,13 @@ export class ChatUtil {
 	static markThreadAsRead(playerId: EntityId, participantId: EntityId): void {
 		const threads = Component.get(playerId, ChatThreads);
 		threads?.markAsRead(participantId);
+	}
+
+	/**
+	 * Get a specific chat thread.
+	 */
+	static getThread(playerId: EntityId, participantId: EntityId): ChatThread | undefined {
+		const threads = Component.get(playerId, ChatThreads);
+		return threads?.get(participantId);
 	}
 }

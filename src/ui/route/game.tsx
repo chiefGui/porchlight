@@ -1,9 +1,8 @@
-import { createRoute, redirect } from "@tanstack/react-router";
+import { createRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { ActivityUtil } from "../../game/activity/index.ts";
 import { ChatUtil } from "../../game/chat/index.ts";
 import { Player } from "../../game/player/index.ts";
-import { ChatDrawer } from "../chat/index.ts";
 import { Footer, FooterButton } from "../layout/footer.tsx";
 import { ActivityCard } from "../game/activity-card.tsx";
 import { CharacterDrawer } from "../game/character-drawer.tsx";
@@ -24,8 +23,8 @@ export const gameRoute = createRoute({
 
 function GamePage(): React.ReactElement {
 	const { playerId } = gameRoute.useRouteContext();
+	const navigate = useNavigate();
 	const [characterDrawerOpen, setCharacterDrawerOpen] = useState(false);
-	const [chatDrawerOpen, setChatDrawerOpen] = useState(false);
 	const [, forceUpdate] = useState(0);
 
 	const handleActivity = (activityId: string) => {
@@ -65,8 +64,7 @@ function GamePage(): React.ReactElement {
 				<FooterButton
 					icon={<ChatIcon />}
 					label="Chat"
-					active={chatDrawerOpen}
-					onClick={() => setChatDrawerOpen(true)}
+					onClick={() => navigate({ to: "/chat" })}
 					badge={ChatUtil.getUnreadCount(playerId)}
 				/>
 				<FooterButton
@@ -76,12 +74,6 @@ function GamePage(): React.ReactElement {
 					onClick={() => setCharacterDrawerOpen(true)}
 				/>
 			</Footer>
-
-			<ChatDrawer
-				playerId={playerId}
-				open={chatDrawerOpen}
-				onOpenChange={setChatDrawerOpen}
-			/>
 
 			<CharacterDrawer
 				characterId={playerId}
