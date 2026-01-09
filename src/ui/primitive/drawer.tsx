@@ -15,7 +15,7 @@ import {
 	useDialogStore,
 	type DialogStore,
 } from "@ariakit/react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { tv, type VariantProps } from "tailwind-variants";
 import { cn } from "../lib/cn.ts";
 import { useBackdrop } from "./backdrop.tsx";
