@@ -1,6 +1,6 @@
-import { defineTrait } from "../../../../character/trait.ts";
+import { defineStaticTrait } from "../../../../character/trait.ts";
 
-export const outgoing = defineTrait({
+export const outgoing = defineStaticTrait({
 	id: "outgoing",
 	name: "Outgoing",
 	category: "personality",
@@ -8,7 +8,7 @@ export const outgoing = defineTrait({
 	exclusive: ["shy"],
 });
 
-export const shy = defineTrait({
+export const shy = defineStaticTrait({
 	id: "shy",
 	name: "Shy",
 	category: "personality",
@@ -16,14 +16,14 @@ export const shy = defineTrait({
 	exclusive: ["outgoing"],
 });
 
-export const creative = defineTrait({
+export const creative = defineStaticTrait({
 	id: "creative",
 	name: "Creative",
 	category: "personality",
 	weight: 0.1,
 });
 
-export const athletic = defineTrait({
+export const athletic = defineStaticTrait({
 	id: "athletic",
 	name: "Athletic",
 	category: "personality",
@@ -31,7 +31,7 @@ export const athletic = defineTrait({
 	exclusive: ["lazy"],
 });
 
-export const lazy = defineTrait({
+export const lazy = defineStaticTrait({
 	id: "lazy",
 	name: "Lazy",
 	category: "personality",
@@ -39,14 +39,14 @@ export const lazy = defineTrait({
 	exclusive: ["athletic"],
 });
 
-export const romantic = defineTrait({
+export const romantic = defineStaticTrait({
 	id: "romantic",
 	name: "Romantic",
 	category: "personality",
 	weight: 0.1,
 });
 
-export const ambitious = defineTrait({
+export const ambitious = defineStaticTrait({
 	id: "ambitious",
 	name: "Ambitious",
 	category: "personality",
@@ -54,7 +54,7 @@ export const ambitious = defineTrait({
 	exclusive: ["carefree"],
 });
 
-export const carefree = defineTrait({
+export const carefree = defineStaticTrait({
 	id: "carefree",
 	name: "Carefree",
 	category: "personality",
@@ -62,14 +62,14 @@ export const carefree = defineTrait({
 	exclusive: ["ambitious"],
 });
 
-export const bookworm = defineTrait({
+export const bookworm = defineStaticTrait({
 	id: "bookworm",
 	name: "Bookworm",
 	category: "personality",
 	weight: 0.08,
 });
 
-export const cheerful = defineTrait({
+export const cheerful = defineStaticTrait({
 	id: "cheerful",
 	name: "Cheerful",
 	category: "personality",
@@ -77,7 +77,7 @@ export const cheerful = defineTrait({
 	exclusive: ["gloomy"],
 });
 
-export const gloomy = defineTrait({
+export const gloomy = defineStaticTrait({
 	id: "gloomy",
 	name: "Gloomy",
 	category: "personality",

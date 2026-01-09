@@ -19,3 +19,8 @@ export {
 	type TraitPickOptions,
 	type TraitStrategy,
 } from "./strategy/index.ts";
+
+export {
+	syncInferredTraits,
+	syncInferredTraitsForEntity,
+} from "./trait-sync.ts";

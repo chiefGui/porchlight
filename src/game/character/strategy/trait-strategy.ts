@@ -1,4 +1,7 @@
-import { type Trait, TraitRegistry } from "../../../content/character/trait.ts";
+import {
+	type StaticTrait,
+	TraitRegistry,
+} from "../../../content/character/trait.ts";
 import { Random } from "../../../engine/index.ts";
 
 export type TraitPickOptions = {
@@ -54,10 +57,11 @@ export class DefaultTraitStrategy {
 		category: string;
 		count: number;
 		excluded: Set<string>;
-	}): Trait[] {
+	}): StaticTrait[] {
 		const { category, count, excluded } = options;
 
-		const available = TraitRegistry.getByCategory(category).filter(
+		// Only pick from static traits (inferred traits are computed, not selected)
+		const available = TraitRegistry.getStaticByCategory(category).filter(
 			(t) =>
 				!excluded.has(t.id) && !t.exclusive?.some((ex) => excluded.has(ex)),
 		);
@@ -66,7 +70,7 @@ export class DefaultTraitStrategy {
 			return [];
 		}
 
-		const result: Trait[] = [];
+		const result: StaticTrait[] = [];
 		const pool = [...available];
 
 		for (let i = 0; i < count && pool.length > 0; i++) {
@@ -91,7 +95,7 @@ export class DefaultTraitStrategy {
 		return result;
 	}
 
-	private static pickWeighted(traits: Trait[]): Trait | undefined {
+	private static pickWeighted(traits: StaticTrait[]): StaticTrait | undefined {
 		if (traits.length === 0) return undefined;
 
 		const options = traits.map((t) => ({ value: t, weight: t.weight }));
